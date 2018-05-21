@@ -199,9 +199,15 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        EventBus.getDefault().unregister(this);
+
         mUnbinder.unbind();
     }
 
