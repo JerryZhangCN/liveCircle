@@ -1,0 +1,43 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">10dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="item_margin">8dp</dimen>
+    <dimen name="title_margin">24dp</dimen>
+    <!-- font -->
+    <dimen name="font_tiny">10sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+    <dimen name="font_normal">14sp</dimen>
+    <dimen name="font_normal2">16sp</dimen>
+    <dimen name="font_normal3">20sp</dimen>
+    <dimen name="font_large">24sp</dimen>
+
+    <dimen name="hint_0.5x">6dp</dimen>
+    <dimen name="hint">12dp</dimen>
+    <dimen name="hint_1.5x">20dp</dimen>
+    <dimen name="hint_2x">24dp</dimen>
+    <dimen name="hint_2.5x">30dp</dimen>
+    <dimen name="hint_3x">36dp</dimen>
+    <dimen name="hint_4x">48dp</dimen>
+    <dimen name="hint_5x">64dp</dimen>
+    <dimen name="hint_6x">72dp</dimen>
+    <dimen name="hint_7x">84dp</dimen>
+    <dimen name="hint_8x">96dp</dimen>
+    <dimen name="hint_10x">120dp</dimen>
+    <dimen name="hint_12x">144dp</dimen>
+    <dimen name="hint_15x">180dp</dimen>
+    <dimen name="hint_20x">240dp</dimen>
+
+
+    <!-- text size -->
+    <dimen name="text_size_4px">8sp</dimen>
+    <dimen name="text_size_5px">10sp</dimen>
+    <dimen name="text_size_6px">12sp</dimen>
+    <dimen name="text_size_8px">16sp</dimen>
+    <dimen name="text_size_9px">18sp</dimen>
+    <dimen name="text_size_10px">20sp</dimen>
+    <dimen name="text_size_11px">22sp</dimen>
+    <dimen name="text_size_12px">24sp</dimen>
+</resources>

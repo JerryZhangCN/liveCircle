@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">生活圈</string>
+    <string name="loading">请稍候</string>
+    <string name="net_error">网络访问错误，请稍后再试</string>
+    <string name="download">下载中心</string>
+    <string name="search">搜索</string>
+    <!-- 共享过度动画 -->
+    <string name="transition_photos">transition_animation_news_photos</string>
+    <string name="channel_manage">频道管理</string>
+    <string name="my_channel">我的频道       长按并拖拽可排序</string>
+    <string name="more_channel">更多频道       点击添加</string>
+    <string name="reload">重新尝试</string>
+    <string name="empty">还没有数据</string>
+    <string name="news_from">%1$s %2$s</string>
+
+    <!-- login -->
+    <string name="login">登录</string>
+    <string name="login_account">登录名</string>
+    <string name="password">密码</string>
+    <string name="forget_password">忘记密码？</string>
+
+
+    <!-- register -->
+    <string name="register">注册</string>
+    <string name="account">用户名</string>
+    <string name="email">邮箱</string>
+    <string name="enter_psd">确认密码</string>
+    <string name="sex">性别</string>
+    <string name="brithday">生日</string>
+    <string name="address">住址</string>
+    <string name="id_card">证件号</string>
+    <string name="real_name">真实姓名</string>
+
+
+    <!-- 主页 -->
+    <string name="no_data">暂无数据</string>
+    <string name="credit">信用值</string>
+    <string name="add_time">上架时间</string>
+    <string name="price">价格</string>
+</resources>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_white">
+   <include layout="@layout/public_top_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="@dimen/hint_10x"
+            android:layout_height="@dimen/hint_4x"
+            android:src="@drawable/icon" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/ed_login_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hint_4x"
+            android:layout_marginLeft="@dimen/hint_4x"
+            android:layout_marginRight="@dimen/hint_4x"
+            android:background="@null"
+            android:hint="@string/login_account"
+            android:paddingLeft="@dimen/hint_0.5x"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/text_size_8px" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/hint_4x"
+            android:layout_marginRight="@dimen/hint_4x"
+            android:background="@color/color_gray" />
+
+        <EditText
+            android:id="@+id/ed_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hint_4x"
+            android:layout_marginLeft="@dimen/hint_4x"
+            android:layout_marginRight="@dimen/hint_4x"
+            android:background="@null"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/hint_0.5x"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/text_size_8px" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/hint_4x"
+            android:layout_marginRight="@dimen/hint_4x"
+            android:background="@color/color_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/hint_4x"
+            android:layout_marginRight="@dimen/hint_4x"
+            android:layout_marginTop="@dimen/hint_0.5x"
+            android:gravity="right"
+            android:text="@string/forget_password"
+            android:textSize="@dimen/text_size_6px" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hint_4x"
+            android:layout_marginLeft="@dimen/hint_4x"
+            android:layout_marginRight="@dimen/hint_4x"
+            android:layout_marginTop="@dimen/hint_8x"
+            android:background="@drawable/login_button_shape"
+            android:text="@string/login"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_9px"/>
+
+    </LinearLayout>
+</LinearLayout>
