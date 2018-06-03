@@ -15,23 +15,28 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.lvr.livecircle.R;
 import com.lvr.livecircle.adapter.HomeViewPagerAdapter;
 import com.lvr.livecircle.base.BaseActivity;
-import com.lvr.livecircle.bean.FabScrollBean;
-import com.lvr.livecircle.meitu.MeiTuFragment;
-import com.lvr.livecircle.music.MusicFragment;
-import com.lvr.livecircle.recommend.RecommendFragment;
+import com.lvr.livecircle.bean.Cache;
+import com.lvr.livecircle.meitu.RecommendFragment;
+import com.lvr.livecircle.music.OrderFragment;
+import com.lvr.livecircle.music.ShellFragment;
+import com.lvr.livecircle.recommend.MyResourceFragment;
 import com.lvr.livecircle.utils.StatusBarSetting;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -48,17 +53,28 @@ public class MainActivity extends BaseActivity {
     TabLayout mTabs;
     @BindView(R.id.vp_moudle)
     ViewPager mVpMoudle;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
     private View mView_nav;
     private ImageView mIv_photo;
-    private String[] mMoudleName = {"推荐", "资源", "通告"};
+    private String[] mMoudleName = {"精品推荐", "我发布的", "我买入的", "我卖出的"};
     private ArrayList<Fragment> mFragmentList = new ArrayList<Fragment>();
     private RecommendFragment mRecommendFragment;
-    private MusicFragment mMusicFragment;
-    private MeiTuFragment mMeiTuFragment;
+    private OrderFragment mOrderFragment;
+    private MyResourceFragment mMyResourceFragment;
+    private ShellFragment mShellFragment;
+    private TextView user_name;
+    private TextView user_credit;
+    private MenuItem mn_phone;
+    private MenuItem mn_sex;
+    private MenuItem mn_brith;
+    private MenuItem mn_email;
+    private MenuItem mn_out;
+    private MenuItem mn_hint;
+    private TextView tv_login;
+    @BindString(R.string.credit)
+    String credit;
 
     private HomeViewPagerAdapter mAdapter;
+    private boolean isLogin = false;
 
     @Override
     public int getLayoutId() {
@@ -72,39 +88,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        if (Cache.getInstance().getUser() != null)
+            isLogin = true;
         StatusBarSetting.setColorForDrawerLayout(this, mAmDl, getResources().getColor(R.color.colorPrimary), StatusBarSetting.DEFAULT_STATUS_BAR_ALPHA);
         setToolBar();
         setNavigationView();
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EventBus.getDefault().post(new FabScrollBean("滑动到顶端",mTabs.getSelectedTabPosition()));
-
-            }
-        });
-        mTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                if(position==1||position==3){
-                    mFab.setVisibility(View.VISIBLE);
-                }else{
-                    mFab.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,14 +117,17 @@ public class MainActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         FragmentManager manager = getSupportFragmentManager();
-        if (mMeiTuFragment.isAdded()) {
-            manager.putFragment(outState, "MeiTuFragment", mMeiTuFragment);
-        }
-        if (mMusicFragment.isAdded()) {
-            manager.putFragment(outState, "MusicFragment", mMusicFragment);
-        }
         if (mRecommendFragment.isAdded()) {
             manager.putFragment(outState, "RecommendFragment", mRecommendFragment);
+        }
+        if (mMyResourceFragment.isAdded()) {
+            manager.putFragment(outState, "MyResourceFragment", mMyResourceFragment);
+        }
+        if (mOrderFragment.isAdded()) {
+            manager.putFragment(outState, "OrderFragment", mOrderFragment);
+        }
+        if (mShellFragment.isAdded()) {
+            manager.putFragment(outState, "ShellFragment", mShellFragment);
         }
     }
 
@@ -147,16 +140,19 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (savedInstanceState != null) {
             mRecommendFragment = (RecommendFragment) getSupportFragmentManager().getFragment(savedInstanceState, "RecommendFragment");
-            mMeiTuFragment = (MeiTuFragment) getSupportFragmentManager().getFragment(savedInstanceState, "MeiTuFragment");
-            mMusicFragment = (MusicFragment) getSupportFragmentManager().getFragment(savedInstanceState, "MusicFragment");
+            mOrderFragment = (OrderFragment) getSupportFragmentManager().getFragment(savedInstanceState, "OrderFragment");
+            mMyResourceFragment = (MyResourceFragment) getSupportFragmentManager().getFragment(savedInstanceState, "MyResourceFragment");
+            mShellFragment = (ShellFragment) getSupportFragmentManager().getFragment(savedInstanceState, "ShellFragment");
         } else {
             mRecommendFragment = new RecommendFragment();
-            mMeiTuFragment = new MeiTuFragment();
-            mMusicFragment = new MusicFragment();
+            mOrderFragment = new OrderFragment();
+            mMyResourceFragment = new MyResourceFragment();
+            mShellFragment = new ShellFragment();
         }
-        mFragmentList.add(mMeiTuFragment);
         mFragmentList.add(mRecommendFragment);
-        mFragmentList.add(mMusicFragment);
+        mFragmentList.add(mMyResourceFragment);
+        mFragmentList.add(mOrderFragment);
+        mFragmentList.add(mShellFragment);
 
     }
 
@@ -168,15 +164,48 @@ public class MainActivity extends BaseActivity {
         mAmNv.setItemIconTintList(null);
         View headerView = mAmNv.getHeaderView(0);
         mIv_photo = (ImageView) headerView.findViewById(R.id.iv_user_photo);
+        user_name = (TextView) headerView.findViewById(R.id.user_name);
+        user_credit = (TextView) headerView.findViewById(R.id.user_credit);
+        tv_login = (TextView) headerView.findViewById(R.id.tv_login);
+        if (isLogin) {
+            if (Cache.getInstance().getUser().getHead_img() != null)
+                Glide.with(this).load(Cache.getInstance().getUser().getHead_img()).into(mIv_photo);
+            user_name.setText(Cache.getInstance().getUser().getRealname());
+            user_credit.setText(credit + ":" + Cache.getInstance().getUser().getCredit());
+            user_name.setVisibility(View.VISIBLE);
+            user_credit.setVisibility(View.VISIBLE);
+            tv_login.setVisibility(View.INVISIBLE);
+        }
         mIv_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+        Menu footView = mAmNv.getMenu();
+        mn_phone = footView.getItem(0);
+        mn_sex = footView.getItem(1);
+        mn_brith = footView.getItem(2);
+        mn_email = footView.getItem(3);
+        mn_out = footView.getItem(4);
+        mn_hint = footView.getItem(5);
+        if (isLogin) {
+            mn_sex.setTitle(Cache.getInstance().getUser().getSex() == 1 ? "男" : "女");
+            mn_brith.setTitle(Cache.getInstance().getUser().getBirth());
+            mn_phone.setTitle(Cache.getInstance().getUser().getAddress());
+            mn_email.setTitle(Cache.getInstance().getUser().getEmali());
+            mn_out.setVisible(true);
+            mn_sex.setVisible(true);
+            mn_brith.setVisible(true);
+            mn_phone.setVisible(true);
+            mn_email.setVisible(true);
+            mn_hint.setVisible(false);
+
+        }
     }
+
 
     /**
      * 设置状态栏
@@ -196,6 +225,9 @@ public class MainActivity extends BaseActivity {
         //actionbar中的内容进行初始化
         mToolbar.setTitle("生活圈");//设置标题
         mToolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        //检测用户是否已登录
+
+
     }
 
     /**

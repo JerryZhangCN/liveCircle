@@ -1,6 +1,7 @@
 package com.lvr.livecircle.home.present;
 
 import com.lvr.livecircle.bean.Resources;
+import com.lvr.livecircle.bean.ResponseResource;
 import com.lvr.livecircle.bean.User;
 
 /**
@@ -12,5 +13,9 @@ public interface RegisterPresent {
     void register(User user);
     void login(User user);
     void getResource(Resources resources);
-
+    void getMyResource(Resources resources);
+    void getMyOrderList(Resources resources);
+    void getResourceById(Resources resources);
+    void createOrder(Resources resources);
+    void getMyShellList(Resources resources);
 }

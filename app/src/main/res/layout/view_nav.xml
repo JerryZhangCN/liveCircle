@@ -1,31 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@drawable/nav_header">
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="@drawable/nav_header"
+    android:orientation="vertical">
+
     <ImageView
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:src="@drawable/nav_header_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/iv_user_photo"
-        android:layout_above="@+id/tv_login"/>
+        android:layout_width="@dimen/hint_4x"
+        android:layout_height="@dimen/hint_4x"
+        android:layout_above="@+id/tv_login"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/nav_header_image" />
+
     <TextView
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/iv_user_photo"
+        android:text="芹菜"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/user_credit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_name"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/iv_user_photo"
+        android:text="信用值:100"
+        android:textColor="@color/black"
         android:textSize="12sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:padding="8dp"
         android:text="点击头像登录"
         android:textColor="@color/white"
-        android:padding="8dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:id="@+id/tv_login"
-        android:layout_alignParentBottom="true"/>
-
+        android:textSize="12sp" />
 
 
 </RelativeLayout>

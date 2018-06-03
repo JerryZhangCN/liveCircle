@@ -37,4 +37,20 @@
     <string name="credit">信用值</string>
     <string name="add_time">上架时间</string>
     <string name="price">价格</string>
+
+    <!-- 订单 -->
+    <string name="order_number">订单单号:</string>
+    <string name="order_time">订单时间:</string>
+    <string name="order_price">订单金额:</string>
+    <string name="order_name">订单名称:</string>
+    <string name="order_status">订单状态:</string>
+    <string name="order_distribution">订单发货:</string>
+
+    <!-- 商品详情 -->
+    <string name="resource_msg">资源详情</string>
+    <string name="resource_time">上架时间:</string>
+    <string name="resource_price">资源价格:</string>
+    <string name="resource_credit">需要信用值:</string>
+    <string name="resource_user_name">发布人:</string>
+    <string name="resource_order">下单</string>
 </resources>

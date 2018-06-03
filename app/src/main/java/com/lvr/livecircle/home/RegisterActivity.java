@@ -101,7 +101,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 }
                 User user=new User();
                 user.setUser_name(ed_userName.getText().toString().trim());
-                user.setEmail(ed_email.getText().toString().trim());
+                user.setEmali(ed_email.getText().toString().trim());
                 user.setUser_password(ed_password.getText().toString().trim());
                 user.setSex(((String)spinner_sex.getSelectedItem()).equals("男")?1:0);
                 user.setBirth(text_brith.getText().toString());

@@ -1,81 +1,65 @@
-package com.lvr.livecircle.meitu;
+package com.lvr.livecircle.music;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aspsine.irecyclerview.IRecyclerView;
-import com.aspsine.irecyclerview.OnLoadMoreListener;
-import com.aspsine.irecyclerview.OnRefreshListener;
 import com.bumptech.glide.Glide;
-import com.facebook.stetho.inspector.protocol.module.Network;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lvr.livecircle.R;
 import com.lvr.livecircle.base.BaseFragment;
 import com.lvr.livecircle.bean.BaseResponse;
-import com.lvr.livecircle.bean.FabScrollBean;
+import com.lvr.livecircle.bean.Cache;
 import com.lvr.livecircle.bean.ObjectEvent;
+import com.lvr.livecircle.bean.Order;
 import com.lvr.livecircle.bean.Resources;
-import com.lvr.livecircle.bean.ResponseResource;
-import com.lvr.livecircle.home.MainActivity;
 import com.lvr.livecircle.home.present.RegisterPresent;
 import com.lvr.livecircle.home.present.RegisterPresentImpl;
-import com.lvr.livecircle.meitu.presenter.impl.PhotoPresenterImpl;
-import com.lvr.livecircle.meitu.view.PhotoView;
 import com.lvr.livecircle.utils.DateUtil;
 import com.lvr.livecircle.utils.StatusCode;
-import com.lvr.livecircle.widget.LoadMoreFooterView;
-import com.lvr.livecircle.widget.LoadingDialog;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 
+/**
+ * Created by lvr on 2017/2/6.
+ */
 
-public class MeiTuFragment extends BaseFragment implements  OnRefreshListener, OnLoadMoreListener {
-
+public class ShellFragment extends BaseFragment {
     //当前页面数（第一次加载默认为1）
     private int mStartPage = 1;
     //每页元素个数（默认为10）
-    private int maxNumber= 10;
+    private int maxNumber = 10;
     //绑定列表展示用的recycle
-    @BindView(R.id.recycle)
+    @BindView(R.id.my_source_recycle)
     XRecyclerView xRecyclerView;
     //当未获取到数据时展示的页面
-    @BindView(R.id.report_no_data)
+    @BindView(R.id.my_resource_no_data)
     TextView no_data;
 
     //通用的适配器
     private CommonAdapter adapter;
     //返回资源容器
-    private List<ResponseResource> results=new ArrayList<>();
+    private List<Order> results = new ArrayList<>();
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.fragment_meitu;
+        return R.layout.fragment_my_resource;
     }
 
     @Override
@@ -86,17 +70,20 @@ public class MeiTuFragment extends BaseFragment implements  OnRefreshListener, O
     /**
      * 调用present来访问api以获取数据
      */
-    private void getData(){
+    private void getData() {
+        if (Cache.getInstance().getUser() == null)
+            return;
         mStartPage = 1;
         results.clear();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
             adapter = null;
         }
-        Resources resources=new Resources();
+        Resources resources = new Resources();
         resources.setPage(mStartPage);
-        RegisterPresent present=new RegisterPresentImpl();
-        present.getResource(resources);
+        resources.setUser_id(Cache.getInstance().getUser().getUser_id());
+        RegisterPresent present = new RegisterPresentImpl();
+        present.getMyShellList(resources);
     }
 
     @Override
@@ -104,29 +91,19 @@ public class MeiTuFragment extends BaseFragment implements  OnRefreshListener, O
 
     }
 
-    @Override
-    public void onLoadMore() {
-
-    }
-
-    @Override
-    public void onRefresh() {
-
-    }
-
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEvent(ObjectEvent event) {
         switch (event.getType()) {
-            case StatusCode.getResources: {
+            case StatusCode.getMyOrderList: {
                 stopProgressDialog();
-                if (((BaseResponse)event.getObject()).getCode()==1) {
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
                     mStartPage++;
-                    BaseResponse baseResponse= (BaseResponse) event.getObject();
-                    Gson gson = new Gson();
-                    String json = gson.toJson(baseResponse.getInfo());
-                    List<ResponseResource> responseResources=jsonToBeanList(json,ResponseResource.class);
-                    initChangeRecycle(responseResources);
+                    BaseResponse baseResponse = (BaseResponse) event.getObject();
+//                    Gson gson = new Gson();
+//                    String json = gson.toJson(baseResponse.getInfo());
+//                    List<ResponseResource> responseResources=jsonToBeanList(json,ResponseResource.class);
+                    initChangeRecycle((List<Order>) baseResponse.getInfo());
                 } else {
                     showLongToast("拉取数据失败！");
                 }
@@ -138,9 +115,10 @@ public class MeiTuFragment extends BaseFragment implements  OnRefreshListener, O
 
     /**
      * 初始化列表
+     *
      * @param resources
      */
-    private void initChangeRecycle(final List<ResponseResource> resources) {
+    private void initChangeRecycle(final List<Order> resources) {
         xRecyclerView.refreshComplete();
         results.addAll(resources);
         if (resources.size() == 0) {
@@ -156,14 +134,31 @@ public class MeiTuFragment extends BaseFragment implements  OnRefreshListener, O
         xRecyclerView.setLoadingMoreProgressStyle(BallBeat);
         xRecyclerView.setLayoutManager(layoutManager);
         xRecyclerView.setLoadingMoreEnabled(true);
-        adapter = new CommonAdapter<ResponseResource>(getActivity(), R.layout.resources, results) {
+        adapter = new CommonAdapter<Order>(getActivity(), R.layout.order, results) {
             @Override
-            protected void convert(ViewHolder holder, ResponseResource responseResource, int position) {
-                Glide.with(getActivity()).load(responseResource.getImg1()).into((ImageView) holder.getView(R.id.resource_img));
-                holder.setText(R.id.resource_name,responseResource.getName());
-                holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())),DateUtil.FORMAT_DEFAULT));
-                holder.setText(R.id.resource_credit, responseResource.getCredit_number());
-                holder.setText(R.id.resource_price,responseResource.getPrice());
+            protected void convert(ViewHolder holder, Order order, int position) {
+                Glide.with(getActivity()).load(order.getResources_img1()).into((ImageView) holder.getView(R.id.order_img));
+                holder.setText(R.id.order_number, order.getOrderno());
+                holder.setText(R.id.order_time, DateUtil.date2Str(new Date(Long.parseLong(order.getItime())), DateUtil.FORMAT_DEFAULT));
+                holder.setText(R.id.order_name, order.getResources_name());
+                holder.setText(R.id.order_distribution, order.getShipping_status().equals("0") ? "未发货" : "已发货");
+                holder.setText(R.id.order_price, order.getResources_price());
+                switch (order.getOrder_status()) {
+                    case "1": {
+                        holder.setText(R.id.order_status, "进行中");
+                        break;
+                    }
+                    case "2": {
+                        holder.setText(R.id.order_status, "取消");
+                        break;
+                    }
+                    case "3": {
+                        holder.setText(R.id.order_status, "已完成");
+                        break;
+                    }
+                }
+
+
             }
         };
         xRecyclerView.setAdapter(adapter);
@@ -172,23 +167,26 @@ public class MeiTuFragment extends BaseFragment implements  OnRefreshListener, O
             public void onRefresh() {
                 getData();
             }
+
             @Override
             public void onLoadMore() {
-                if ( resources.size()<maxNumber) {
-                    showShortToast( "没有更多了");
+                if (resources.size() < maxNumber) {
+                    showShortToast("没有更多了");
                     xRecyclerView.loadMoreComplete();
                     return;
                 }
-                Resources resources=new Resources();
+                Resources resources = new Resources();
                 resources.setPage(mStartPage);
-                RegisterPresent present=new RegisterPresentImpl();
-                present.getResource(resources);
+                resources.setUser_id(Cache.getInstance().getUser().getUser_id());
+                RegisterPresent present = new RegisterPresentImpl();
+                present.getMyOrderList(resources);
             }
         });
     }
 
     /**
      * 为解决泛型传递集合时出现解析异常所使用的工具类
+     *
      * @param json
      * @param t
      * @param <T>
@@ -205,4 +203,3 @@ public class MeiTuFragment extends BaseFragment implements  OnRefreshListener, O
         return list;
     }
 }
-

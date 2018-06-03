@@ -40,7 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         SetStatusBarColor();
         mUnbinder = ButterKnife.bind(this);
         mContext = this;
-
         this.initPresenter();
         this.initView();
     }

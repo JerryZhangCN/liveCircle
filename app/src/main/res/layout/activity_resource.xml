@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".home.ResourceActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/tv_img"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hint_10x"
+            android:visibility="gone" />
+        <ImageView
+            android:id="@+id/tv_img2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hint_10x"
+            android:visibility="gone" />
+        <ImageView
+            android:id="@+id/tv_img3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hint_10x"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hint_2x"
+            android:layout_marginTop="@dimen/hint"
+            android:gravity="center"
+            android:text="@string/resource_msg"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_8px"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/hint"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/hint"
+            android:text="@string/resource_time"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/hint"
+            android:text="@string/resource_price"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/hint"
+            android:text="@string/resource_credit"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/hint"
+            android:text="@string/resource_user_name"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/button_create_order"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hint_4x"
+        android:background="@color/role_yellow_gray"
+        android:gravity="center"
+        android:text="@string/resource_order"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_12px" />
+</LinearLayout>

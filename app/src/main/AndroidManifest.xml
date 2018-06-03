@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.lvr.livecircle">
+    package="com.lvr.livecircle">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.AppApplication"
@@ -15,18 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:theme="@style/AppTheme.Launcher"
             android:name=".home.SplashActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout">
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".home.MainActivity"></activity>
-        <activity android:name=".home.LoginActivity"/>
-        <activity android:name=".home.RegisterActivity"/>
+        <activity android:name=".home.MainActivity" />
+        <activity android:name=".home.LoginActivity" />
+        <activity android:name=".home.RegisterActivity" />
+        <activity android:name=".home.ResourceActivity"></activity>
     </application>
 
 </manifest>

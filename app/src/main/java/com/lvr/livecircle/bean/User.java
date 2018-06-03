@@ -15,6 +15,8 @@ public class User {
     private String address;
     private String id_card;
     private String realname;
+    private String credit;
+    private String user_id;
 
 
     public String getUser_name() {
@@ -39,14 +41,6 @@ public class User {
 
     public void setHead_img(String head_img) {
         this.head_img = head_img;
-    }
-
-    public String getEmail() {
-        return emali;
-    }
-
-    public void setEmail(String email) {
-        this.emali = email;
     }
 
     public int getSex() {
@@ -87,5 +81,29 @@ public class User {
 
     public void setRealname(String realname) {
         this.realname = realname;
+    }
+
+    public String getCredit() {
+        return credit;
+    }
+
+    public void setCredit(String credit) {
+        this.credit = credit;
+    }
+
+    public String getEmali() {
+        return emali;
+    }
+
+    public void setEmali(String emali) {
+        this.emali = emali;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }
