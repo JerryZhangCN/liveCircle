@@ -23,4 +23,10 @@ public class StatusCode {
     public static final int createOrder=713;
     //获取用户卖出商品列表
     public static final int getShellList=714;
+    //获取通告列表
+    public static final int getNoticeList=715;
+    //获取通告的评论列表
+    public static final int getNoticeComment=716;
+    //评论通告
+    public static final int getPushComment=717;
 }

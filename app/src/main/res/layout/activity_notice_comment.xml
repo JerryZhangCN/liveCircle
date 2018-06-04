@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".home.NoticeCommentActivity">
+    <include layout="@layout/public_top_bar" />
+    <include layout="@layout/notice_item"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notice_comment"
+        android:layout_marginLeft="@dimen/hint_2x"
+        android:textColor="@color/black"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+    <LinearLayout
+        android:id="@+id/layout_report_expected"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/notice_comment_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/no_data"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_12px"
+            android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/notice_comment_recycle"
+                android:layout_marginTop="@dimen/hint_0.5x"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/ed_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/hint_3x"
+        android:layout_margin="@dimen/hint"
+        android:textColor="@color/black"
+        android:hint="@string/my_comment"
+        android:layout_marginBottom="@dimen/hint_2x"
+        android:background="@drawable/shape_editext"
+        android:padding="2dp"
+        android:textSize="@dimen/text_size_5px"/>
+    <TextView
+        android:id="@+id/button_push_comment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hint_4x"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="@string/push_comment"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_12px" />
+</LinearLayout>

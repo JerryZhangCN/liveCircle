@@ -13,6 +13,8 @@ public class Resources {
     private String user_id;
     private String id;
     private String resources_id;
+    private String notice_id;
+    private String content;
 
     public int getPage() {
         return page;
@@ -76,5 +78,21 @@ public class Resources {
 
     public void setResources_id(String resources_id) {
         this.resources_id = resources_id;
+    }
+
+    public String getNotice_id() {
+        return notice_id;
+    }
+
+    public void setNotice_id(String notice_id) {
+        this.notice_id = notice_id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

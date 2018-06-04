@@ -18,4 +18,7 @@ public interface RegisterPresent {
     void getResourceById(Resources resources);
     void createOrder(Resources resources);
     void getMyShellList(Resources resources);
+    void getNoticeList(Resources resources);
+    void getNoticeComment(Resources resources);
+    void pushNoticeComment(Resources resources);
 }

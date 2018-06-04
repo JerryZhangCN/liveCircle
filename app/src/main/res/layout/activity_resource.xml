@@ -84,7 +84,7 @@
         android:id="@+id/button_create_order"
         android:layout_width="match_parent"
         android:layout_height="@dimen/hint_4x"
-        android:background="@color/role_yellow_gray"
+        android:background="@color/colorPrimary"
         android:gravity="center"
         android:text="@string/resource_order"
         android:textColor="@color/white"

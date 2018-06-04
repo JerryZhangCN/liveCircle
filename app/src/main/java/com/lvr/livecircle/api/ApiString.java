@@ -1,5 +1,6 @@
 package com.lvr.livecircle.api;
 
+import com.lvr.livecircle.home.ShellActivity;
 import com.lvr.livecircle.widget.LoadMoreFooterView;
 
 public class ApiString {
@@ -25,5 +26,10 @@ public class ApiString {
     public static final String createOrder="/m/orderApi/addOrder";
     //获取用户的订单列表
     public static final String getMyShellList="/m/orderApi/listMyOrderOnMerchant";
-
+    //获取通告
+    public static final String getNoticeList="/m/pageApi/listNotice";
+    //获取通告评论
+    public static final String getNoticeComment="/m/pageApi/listNoticMessage";
+    //获取通告评论
+    public static final String pushComment="/m/pageApi/commentNotic";
 }

@@ -2,6 +2,8 @@ package com.lvr.livecircle.api;
 
 
 import com.lvr.livecircle.bean.BaseResponse;
+import com.lvr.livecircle.bean.Notice;
+import com.lvr.livecircle.bean.NoticeComment;
 import com.lvr.livecircle.bean.Order;
 import com.lvr.livecircle.bean.Resources;
 import com.lvr.livecircle.bean.ResponseResource;
@@ -92,5 +94,32 @@ public interface SyncService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.createOrder)
     Call<BaseResponse> createOrder(@Body Resources resources);
+
+    /**
+     * 获取通告列表
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.getNoticeList)
+    Call<BaseResponse<List<Notice>>> getNoticeList(@Body Resources resources);
+
+    /**
+     * 获取通告评论列表
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.getNoticeComment)
+    Call<BaseResponse<List<NoticeComment>>> getNoticeComment(@Body Resources resources);
+
+    /**
+     * 对通告进行评论
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.pushComment)
+    Call<BaseResponse> pushComment(@Body Resources resources);
 }
 

@@ -53,4 +53,9 @@
     <string name="resource_credit">需要信用值:</string>
     <string name="resource_user_name">发布人:</string>
     <string name="resource_order">下单</string>
+
+    <!-- 通告 -->
+    <string name="notice_comment">评论列表:</string>
+    <string name="push_comment">发布评论</string>
+    <string name="my_comment">我的精彩评论</string>
 </resources>

@@ -1,6 +1,6 @@
-package com.lvr.livecircle.music;
+package com.lvr.livecircle.home;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -14,15 +14,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lvr.livecircle.R;
-import com.lvr.livecircle.base.BaseFragment;
+import com.lvr.livecircle.base.BaseActivity;
 import com.lvr.livecircle.bean.BaseResponse;
 import com.lvr.livecircle.bean.Cache;
-import com.lvr.livecircle.bean.Notice;
 import com.lvr.livecircle.bean.ObjectEvent;
 import com.lvr.livecircle.bean.Order;
 import com.lvr.livecircle.bean.Resources;
-import com.lvr.livecircle.bean.ResponseResource;
-import com.lvr.livecircle.home.NoticeCommentActivity;
 import com.lvr.livecircle.home.present.RegisterPresent;
 import com.lvr.livecircle.home.present.RegisterPresentImpl;
 import com.lvr.livecircle.utils.DateUtil;
@@ -41,60 +38,71 @@ import de.greenrobot.event.ThreadMode;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 
-/**
- * Created by lvr on 2017/2/6.
- */
-
-public class OrderFragment extends BaseFragment {
+public class OrderActivity extends BaseActivity {
+    //当前页面数（第一次加载默认为1）
+    private int mStartPage = 1;
+    //每页元素个数（默认为10）
+    private int maxNumber = 10;
     //绑定列表展示用的recycle
-    @BindView(R.id.my_source_recycle)
+    @BindView(R.id.order_recycle)
     XRecyclerView xRecyclerView;
     //当未获取到数据时展示的页面
-    @BindView(R.id.my_resource_no_data)
+    @BindView(R.id.order_no_data)
     TextView no_data;
 
     //通用的适配器
     private CommonAdapter adapter;
     //返回资源容器
-    private List<Notice> results = new ArrayList<>();
-
+    private List<Order> results = new ArrayList<>();
     @Override
-    protected int getLayoutResource() {
-        return R.layout.fragment_my_resource;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
-    protected void initView() {
-        getData();
+    public int getLayoutId() {
+        return R.layout.activity_order;
     }
+
+    @Override
+    public void initPresenter() {
+
+    }
+
+    @Override
+    public void initView() {
+              getData();
+    }
+
 
     /**
      * 调用present来访问api以获取数据
      */
     private void getData() {
+        if (Cache.getInstance().getUser() == null)
+            return;
+        mStartPage = 1;
         results.clear();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
             adapter = null;
         }
+        Resources resources = new Resources();
+        resources.setPage(mStartPage);
+        resources.setUser_id(Cache.getInstance().getUser().getUser_id());
         RegisterPresent present = new RegisterPresentImpl();
-        present.getNoticeList(new Resources());
+        present.getMyOrderList(resources);
     }
-
-    @Override
-    protected void onFragmentVisibleChange(boolean isVisible) {
-
-    }
-
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEvent(ObjectEvent event) {
         switch (event.getType()) {
-            case StatusCode.getNoticeList: {
+            case StatusCode.getMyOrderList: {
                 stopProgressDialog();
                 if (((BaseResponse) event.getObject()).getCode() == 1) {
+                    mStartPage++;
                     BaseResponse baseResponse = (BaseResponse) event.getObject();
-                    initChangeRecycle((List<Notice>) baseResponse.getInfo());
+                    initChangeRecycle((List<Order>) baseResponse.getInfo());
                 } else {
                     showLongToast("拉取数据失败！");
                 }
@@ -109,7 +117,7 @@ public class OrderFragment extends BaseFragment {
      *
      * @param resources
      */
-    private void initChangeRecycle(final List<Notice> resources) {
+    private void initChangeRecycle(final List<Order> resources) {
         xRecyclerView.refreshComplete();
         results.addAll(resources);
         if (resources.size() == 0) {
@@ -118,41 +126,60 @@ public class OrderFragment extends BaseFragment {
         } else {
             no_data.setVisibility(View.GONE);
         }
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         xRecyclerView.setPullRefreshEnabled(true);
         xRecyclerView.setRefreshProgressStyle(BallSpinFadeLoader);
         xRecyclerView.setLoadingMoreProgressStyle(BallBeat);
         xRecyclerView.setLayoutManager(layoutManager);
-        xRecyclerView.setLoadingMoreEnabled(false);
-        adapter = new CommonAdapter<Notice>(getActivity(), R.layout.notice_item, results) {
+        xRecyclerView.setLoadingMoreEnabled(true);
+        adapter = new CommonAdapter<Order>(this, R.layout.order, results) {
             @Override
-            protected void convert(ViewHolder holder, final Notice notice, int position) {
-                holder.setText(R.id.notice_title,notice.getTitle());
-                holder.setText(R.id.notice_content,notice.getContent());
-                holder.setText(R.id.notice_user,notice.getMemo());
-                holder.setOnClickListener(R.id.notice_item, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent=new Intent(getActivity(), NoticeCommentActivity.class);
-                        Bundle bundle=new Bundle();
-                        bundle.putSerializable("notice",notice);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+            protected void convert(ViewHolder holder, Order order, int position) {
+                Glide.with(OrderActivity.this).load(order.getResources_img1()).into((ImageView) holder.getView(R.id.order_img));
+                holder.setText(R.id.order_number, order.getOrderno());
+                holder.setText(R.id.order_time, DateUtil.date2Str(new Date(Long.parseLong(order.getItime())), DateUtil.FORMAT_DEFAULT));
+                holder.setText(R.id.order_name, order.getResources_name());
+                holder.setText(R.id.order_distribution, order.getShipping_status().equals("0") ? "未发货" : "已发货");
+                holder.setText(R.id.order_price, order.getResources_price());
+                switch (order.getOrder_status()) {
+                    case "1": {
+                        holder.setText(R.id.order_status, "进行中");
+                        break;
                     }
-                });
+                    case "2": {
+                        holder.setText(R.id.order_status, "取消");
+                        break;
+                    }
+                    case "3": {
+                        holder.setText(R.id.order_status, "已完成");
+                        break;
+                    }
+                }
+
+
             }
         };
+        xRecyclerView.setAdapter(adapter);
         xRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 getData();
             }
+
             @Override
             public void onLoadMore() {
+                if (resources.size() < maxNumber) {
+                    showShortToast("没有更多了");
+                    xRecyclerView.loadMoreComplete();
+                    return;
+                }
+                Resources resources = new Resources();
+                resources.setPage(mStartPage);
+                resources.setUser_id(Cache.getInstance().getUser().getUser_id());
+                RegisterPresent present = new RegisterPresentImpl();
+                present.getMyOrderList(resources);
             }
         });
-        xRecyclerView.setAdapter(adapter);
     }
-
 }

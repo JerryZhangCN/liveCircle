@@ -3,6 +3,8 @@ package com.lvr.livecircle.home.present;
 import com.lvr.livecircle.api.ServiceClient;
 import com.lvr.livecircle.api.SyncService;
 import com.lvr.livecircle.bean.BaseResponse;
+import com.lvr.livecircle.bean.Notice;
+import com.lvr.livecircle.bean.NoticeComment;
 import com.lvr.livecircle.bean.ObjectEvent;
 import com.lvr.livecircle.bean.Order;
 import com.lvr.livecircle.bean.Resources;
@@ -60,6 +62,21 @@ public class RegisterPresentImpl implements RegisterPresent {
         doConnect(StatusCode.getShellList, resources);
     }
 
+    @Override
+    public void getNoticeList(Resources resources) {
+        doConnect(StatusCode.getNoticeList, resources);
+    }
+
+    @Override
+    public void getNoticeComment(Resources resources) {
+        doConnect(StatusCode.getNoticeComment, resources);
+    }
+
+    @Override
+    public void pushNoticeComment(Resources resources) {
+        doConnect(StatusCode.getPushComment, resources);
+    }
+
 
     /**
      * 网络请求
@@ -114,9 +131,26 @@ public class RegisterPresentImpl implements RegisterPresent {
                             EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getResourceById, resourceResponse.body(), true));
                             break;
                         }
-                        case StatusCode.createOrder:{
+                        case StatusCode.createOrder: {
                             Response<BaseResponse> resourceResponse = syncService.createOrder((Resources) object).execute();
                             EventBus.getDefault().post(new ObjectEvent<>(StatusCode.createOrder, resourceResponse.body(), true));
+                            break;
+                        }
+
+                        case StatusCode.getNoticeList: {
+                            Response<BaseResponse<List<Notice>>> resourceResponse = syncService.getNoticeList((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getNoticeList, resourceResponse.body(), true));
+                            break;
+                        }
+
+                        case StatusCode.getNoticeComment: {
+                            Response<BaseResponse<List<NoticeComment>>> resourceResponse = syncService.getNoticeComment((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getNoticeComment, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.getPushComment: {
+                            Response<BaseResponse> resourceResponse = syncService.pushComment((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getPushComment, resourceResponse.body(), true));
                             break;
                         }
                     }

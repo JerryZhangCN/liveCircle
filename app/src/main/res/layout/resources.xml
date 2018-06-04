@@ -31,15 +31,15 @@
         <LinearLayout
             android:id="@+id/view_single_source_scan"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/hint_2x"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/resource_name"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/hint_2x"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/color_black"
-                android:textSize="@dimen/text_size_6px" />
+                android:textSize="@dimen/text_size_5px" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,8 +111,5 @@
                 android:textColor="@color/color_black"
                 android:textSize="@dimen/text_size_4px" />
         </LinearLayout>
-
     </LinearLayout>
-
-
 </LinearLayout>

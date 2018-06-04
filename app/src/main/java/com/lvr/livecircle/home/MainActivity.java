@@ -26,6 +26,7 @@ import com.lvr.livecircle.R;
 import com.lvr.livecircle.adapter.HomeViewPagerAdapter;
 import com.lvr.livecircle.base.BaseActivity;
 import com.lvr.livecircle.bean.Cache;
+import com.lvr.livecircle.bean.Order;
 import com.lvr.livecircle.meitu.RecommendFragment;
 import com.lvr.livecircle.music.OrderFragment;
 import com.lvr.livecircle.music.ShellFragment;
@@ -55,20 +56,17 @@ public class MainActivity extends BaseActivity {
     ViewPager mVpMoudle;
     private View mView_nav;
     private ImageView mIv_photo;
-    private String[] mMoudleName = {"精品推荐", "我发布的", "我买入的", "我卖出的"};
+    private String[] mMoudleName = {"精品推荐", "小区布告"};
     private ArrayList<Fragment> mFragmentList = new ArrayList<Fragment>();
     private RecommendFragment mRecommendFragment;
-    private OrderFragment mOrderFragment;
-    private MyResourceFragment mMyResourceFragment;
-    private ShellFragment mShellFragment;
+    private OrderFragment mNoticeFragment;
     private TextView user_name;
     private TextView user_credit;
-    private MenuItem mn_phone;
-    private MenuItem mn_sex;
-    private MenuItem mn_brith;
-    private MenuItem mn_email;
+    private MenuItem mn_msg;
+    private MenuItem mn_setup;
+    private MenuItem mn_order;
+    private MenuItem mn_shell;
     private MenuItem mn_out;
-    private MenuItem mn_hint;
     private TextView tv_login;
     @BindString(R.string.credit)
     String credit;
@@ -120,14 +118,9 @@ public class MainActivity extends BaseActivity {
         if (mRecommendFragment.isAdded()) {
             manager.putFragment(outState, "RecommendFragment", mRecommendFragment);
         }
-        if (mMyResourceFragment.isAdded()) {
-            manager.putFragment(outState, "MyResourceFragment", mMyResourceFragment);
-        }
-        if (mOrderFragment.isAdded()) {
-            manager.putFragment(outState, "OrderFragment", mOrderFragment);
-        }
-        if (mShellFragment.isAdded()) {
-            manager.putFragment(outState, "ShellFragment", mShellFragment);
+
+        if (mNoticeFragment.isAdded()) {
+            manager.putFragment(outState, "OrderFragment", mNoticeFragment);
         }
     }
 
@@ -140,19 +133,13 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (savedInstanceState != null) {
             mRecommendFragment = (RecommendFragment) getSupportFragmentManager().getFragment(savedInstanceState, "RecommendFragment");
-            mOrderFragment = (OrderFragment) getSupportFragmentManager().getFragment(savedInstanceState, "OrderFragment");
-            mMyResourceFragment = (MyResourceFragment) getSupportFragmentManager().getFragment(savedInstanceState, "MyResourceFragment");
-            mShellFragment = (ShellFragment) getSupportFragmentManager().getFragment(savedInstanceState, "ShellFragment");
+            mNoticeFragment = (OrderFragment) getSupportFragmentManager().getFragment(savedInstanceState, "OrderFragment");
         } else {
             mRecommendFragment = new RecommendFragment();
-            mOrderFragment = new OrderFragment();
-            mMyResourceFragment = new MyResourceFragment();
-            mShellFragment = new ShellFragment();
+            mNoticeFragment = new OrderFragment();
         }
         mFragmentList.add(mRecommendFragment);
-        mFragmentList.add(mMyResourceFragment);
-        mFragmentList.add(mOrderFragment);
-        mFragmentList.add(mShellFragment);
+        mFragmentList.add(mNoticeFragment);
 
     }
 
@@ -185,25 +172,57 @@ public class MainActivity extends BaseActivity {
             }
         });
         Menu footView = mAmNv.getMenu();
-        mn_phone = footView.getItem(0);
-        mn_sex = footView.getItem(1);
-        mn_brith = footView.getItem(2);
-        mn_email = footView.getItem(3);
+        mn_msg = footView.getItem(0);
+        mn_setup = footView.getItem(1);
+        mn_order = footView.getItem(2);
+        mn_shell = footView.getItem(3);
         mn_out = footView.getItem(4);
-        mn_hint = footView.getItem(5);
-        if (isLogin) {
-            mn_sex.setTitle(Cache.getInstance().getUser().getSex() == 1 ? "男" : "女");
-            mn_brith.setTitle(Cache.getInstance().getUser().getBirth());
-            mn_phone.setTitle(Cache.getInstance().getUser().getAddress());
-            mn_email.setTitle(Cache.getInstance().getUser().getEmali());
-            mn_out.setVisible(true);
-            mn_sex.setVisible(true);
-            mn_brith.setVisible(true);
-            mn_phone.setVisible(true);
-            mn_email.setVisible(true);
-            mn_hint.setVisible(false);
+        mn_setup.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if (!isLogin) {
+                    showLongToast("您尚未登录，请登录");
+                    return false;
+                }
+                startActivity(SetupActivity.class);
+                return true;
+            }
+        });
+        mn_order.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if (!isLogin) {
+                    showLongToast("您尚未登录，请登录");
+                    return false;
+                }
+                startActivity(OrderActivity.class);
+                return true;
+            }
+        });
+        mn_shell.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if (!isLogin) {
+                    showLongToast("您尚未登录，请登录");
+                    return false;
+                }
+                startActivity(ShellActivity.class);
+                return true;
+            }
+        });
+        mn_out.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if (!isLogin) {
+                    showLongToast("您尚未登录，请登录");
+                    return false;
+                }
+                Cache.getInstance().setUser(null);
+                startActivity(LoginActivity.class);
+                return true;
+            }
+        });
 
-        }
     }
 
 

@@ -27,7 +27,12 @@
         <activity android:name=".home.MainActivity" />
         <activity android:name=".home.LoginActivity" />
         <activity android:name=".home.RegisterActivity" />
-        <activity android:name=".home.ResourceActivity"></activity>
+        <activity android:name=".home.ResourceActivity" />
+        <activity android:name=".home.OrderActivity" />
+        <activity android:name=".home.ShellActivity" />
+        <activity android:name=".home.SetupActivity" />
+        <activity android:name=".home.IssueActivity" />
+        <activity android:name=".home.NoticeCommentActivity"></activity>
     </application>
 
 </manifest>
