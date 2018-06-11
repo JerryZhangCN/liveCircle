@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context=".home.ShellActivity">
+    <include layout="@layout/public_top_bar"/>
     <LinearLayout
         android:id="@+id/layout_report_expected"
         android:layout_width="match_parent"

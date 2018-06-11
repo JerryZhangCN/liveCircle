@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:layout_centerInParent="true"
-        android:textColor="@color/color_black"
+        android:textColor="@color/color_white"
         android:textSize="@dimen/text_size_9px"/>
 
 
@@ -27,9 +27,10 @@
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:layout_alignParentRight="true"
+        android:visibility="gone"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/hint"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/white"
         android:textSize="@dimen/text_size_8px"/>
 
 </RelativeLayout>

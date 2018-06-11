@@ -29,4 +29,20 @@ public class StatusCode {
     public static final int getNoticeComment=716;
     //评论通告
     public static final int getPushComment=717;
+    //获取STS
+    public static final int getSTS=718;
+    //选择图片
+    public static final int getImg=719;
+    //更新用户信息
+    public static final int updateUserMsg=720;
+    //获取资源类型
+    public static final int getResourceType=721;
+    //选择图片1
+    public static final int getImg1=722;
+    //选择图片2
+    public static final int getImg2=723;
+    //选择图片3
+    public static final int getImg3=724;
+    //创建资源
+    public static final int createResource=725;
 }

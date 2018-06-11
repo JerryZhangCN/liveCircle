@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
@@ -49,11 +50,14 @@ public class ShellActivity extends BaseActivity {
     //当未获取到数据时展示的页面
     @BindView(R.id.my_resource_no_data)
     TextView no_data;
+    @BindView(R.id.top_title)
+    TextView top_title;
 
     //通用的适配器
     private CommonAdapter adapter;
     //返回资源容器
     private List<Order> results = new ArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +75,18 @@ public class ShellActivity extends BaseActivity {
 
     @Override
     public void initView() {
-           getData();
+        top_title.setText("我卖出的");
+        getData();
+    }
+
+    @OnClick(R.id.top_back)
+    public void OnClick(View view){
+        switch (view.getId()){
+            case R.id.top_back:{
+                finish();
+                break;
+            }
+        }
     }
 
     /**
@@ -96,7 +111,7 @@ public class ShellActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEvent(ObjectEvent event) {
         switch (event.getType()) {
-            case StatusCode.getMyOrderList: {
+            case StatusCode.getShellList: {
                 stopProgressDialog();
                 if (((BaseResponse) event.getObject()).getCode() == 1) {
                     mStartPage++;

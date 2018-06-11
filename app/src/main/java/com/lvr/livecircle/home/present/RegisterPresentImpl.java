@@ -7,8 +7,10 @@ import com.lvr.livecircle.bean.Notice;
 import com.lvr.livecircle.bean.NoticeComment;
 import com.lvr.livecircle.bean.ObjectEvent;
 import com.lvr.livecircle.bean.Order;
+import com.lvr.livecircle.bean.ResourceType;
 import com.lvr.livecircle.bean.Resources;
 import com.lvr.livecircle.bean.ResponseResource;
+import com.lvr.livecircle.bean.STS;
 import com.lvr.livecircle.bean.User;
 import com.lvr.livecircle.utils.StatusCode;
 
@@ -75,6 +77,26 @@ public class RegisterPresentImpl implements RegisterPresent {
     @Override
     public void pushNoticeComment(Resources resources) {
         doConnect(StatusCode.getPushComment, resources);
+    }
+
+    @Override
+    public void getSTS(Resources resources) {
+        doConnect(StatusCode.getSTS, resources);
+    }
+
+    @Override
+    public void updateUserMsg(User user) {
+        doConnect(StatusCode.updateUserMsg, user);
+    }
+
+    @Override
+    public void getResourceType(Resources resources) {
+        doConnect(StatusCode.getResourceType, resources);
+    }
+
+    @Override
+    public void createResource(Resources resources) {
+        doConnect(StatusCode.createResource, resources);
     }
 
 
@@ -151,6 +173,27 @@ public class RegisterPresentImpl implements RegisterPresent {
                         case StatusCode.getPushComment: {
                             Response<BaseResponse> resourceResponse = syncService.pushComment((Resources) object).execute();
                             EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getPushComment, resourceResponse.body(), true));
+                            break;
+                        }
+
+                        case StatusCode.getSTS: {
+                            Response<STS> resourceResponse = syncService.getSTS((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getSTS, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.updateUserMsg: {
+                            Response<BaseResponse> resourceResponse = syncService.updateUserMsg((User) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.updateUserMsg, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.getResourceType: {
+                            Response<BaseResponse<List<ResourceType>>> resourceResponse = syncService.getResourceType((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getResourceType, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.createResource: {
+                            Response<BaseResponse> resourceResponse = syncService.createResource((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.createResource, resourceResponse.body(), true));
                             break;
                         }
                     }

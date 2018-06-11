@@ -41,12 +41,12 @@ import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 
 
-public class RecommendFragment extends BaseFragment implements  OnRefreshListener, OnLoadMoreListener {
+public class RecommendFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 
     //当前页面数（第一次加载默认为1）
     private int mStartPage = 1;
     //每页元素个数（默认为10）
-    private int maxNumber= 10;
+    private int maxNumber = 10;
     //绑定列表展示用的recycle
     @BindView(R.id.recycle)
     XRecyclerView xRecyclerView;
@@ -57,7 +57,7 @@ public class RecommendFragment extends BaseFragment implements  OnRefreshListene
     //通用的适配器
     private CommonAdapter adapter;
     //返回资源容器
-    private List<ResponseResource> results=new ArrayList<>();
+    private List<ResponseResource> results = new ArrayList<>();
 
     @Override
     protected int getLayoutResource() {
@@ -72,16 +72,16 @@ public class RecommendFragment extends BaseFragment implements  OnRefreshListene
     /**
      * 调用present来访问api以获取数据
      */
-    private void getData(){
+    private void getData() {
         mStartPage = 1;
         results.clear();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
             adapter = null;
         }
-        Resources resources=new Resources();
+        Resources resources = new Resources();
         resources.setPage(mStartPage);
-        RegisterPresent present=new RegisterPresentImpl();
+        RegisterPresent present = new RegisterPresentImpl();
         present.getResource(resources);
     }
 
@@ -106,13 +106,18 @@ public class RecommendFragment extends BaseFragment implements  OnRefreshListene
         switch (event.getType()) {
             case StatusCode.getResources: {
                 stopProgressDialog();
-                if (((BaseResponse)event.getObject()).getCode()==1) {
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
                     mStartPage++;
-                    BaseResponse baseResponse= (BaseResponse) event.getObject();
+                    BaseResponse baseResponse = (BaseResponse) event.getObject();
                     Gson gson = new Gson();
                     String json = gson.toJson(baseResponse.getInfo());
-                    List<ResponseResource> responseResources=jsonToBeanList(json,ResponseResource.class);
-                    initChangeRecycle(responseResources);
+                    List<ResponseResource> responseResources = jsonToBeanList(json, ResponseResource.class);
+                    if (adapter != null) {
+                        results.addAll(responseResources);
+                        adapter.notifyDataSetChanged();
+                        xRecyclerView.loadMoreComplete();
+                    } else
+                        initChangeRecycle(responseResources);
                 } else {
                     showLongToast("拉取数据失败！");
                 }
@@ -124,6 +129,7 @@ public class RecommendFragment extends BaseFragment implements  OnRefreshListene
 
     /**
      * 初始化列表
+     *
      * @param resources
      */
     private void initChangeRecycle(final List<ResponseResource> resources) {
@@ -146,15 +152,15 @@ public class RecommendFragment extends BaseFragment implements  OnRefreshListene
             @Override
             protected void convert(ViewHolder holder, final ResponseResource responseResource, int position) {
                 Glide.with(getActivity()).load(responseResource.getImg1()).into((ImageView) holder.getView(R.id.resource_img));
-                holder.setText(R.id.resource_name,responseResource.getName());
-                holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())),DateUtil.FORMAT_DEFAULT));
+                holder.setText(R.id.resource_name, responseResource.getName());
+                holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())), DateUtil.FORMAT_DEFAULT));
                 holder.setText(R.id.resource_credit, responseResource.getCredit_number());
-                holder.setText(R.id.resource_price,responseResource.getPrice());
+                holder.setText(R.id.resource_price, responseResource.getPrice());
                 holder.setOnClickListener(R.id.product_item, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent =new Intent(getActivity(), ResourceActivity.class);
-                        intent.putExtra("id",responseResource.getId());
+                        Intent intent = new Intent(getActivity(), ResourceActivity.class);
+                        intent.putExtra("id", responseResource.getId());
                         startActivity(intent);
                     }
                 });
@@ -166,16 +172,17 @@ public class RecommendFragment extends BaseFragment implements  OnRefreshListene
             public void onRefresh() {
                 getData();
             }
+
             @Override
             public void onLoadMore() {
-                if ( resources.size()<maxNumber) {
-                    showShortToast( "没有更多了");
+                if (resources.size() < maxNumber) {
+                    showShortToast("没有更多了");
                     xRecyclerView.loadMoreComplete();
                     return;
                 }
-                Resources resources=new Resources();
+                Resources resources = new Resources();
                 resources.setPage(mStartPage);
-                RegisterPresent present=new RegisterPresentImpl();
+                RegisterPresent present = new RegisterPresentImpl();
                 present.getResource(resources);
             }
         });
@@ -183,6 +190,7 @@ public class RecommendFragment extends BaseFragment implements  OnRefreshListene
 
     /**
      * 为解决泛型传递集合时出现解析异常所使用的工具类
+     *
      * @param json
      * @param t
      * @param <T>

@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".home.SetupActivity">
+    <include layout="@layout/public_top_bar"/>
     <LinearLayout
         android:id="@+id/layout_report_expected"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
         <TextView
             android:id="@+id/my_resource_no_data"
@@ -31,4 +33,13 @@
                 />
         </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/button_set_up"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hint_4x"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="@string/set_up"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_12px" />
 </LinearLayout>

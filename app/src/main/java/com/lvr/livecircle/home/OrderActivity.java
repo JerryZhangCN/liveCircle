@@ -32,12 +32,16 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 
+/**
+ * 我的买入订单页面
+ */
 public class OrderActivity extends BaseActivity {
     //当前页面数（第一次加载默认为1）
     private int mStartPage = 1;
@@ -49,6 +53,8 @@ public class OrderActivity extends BaseActivity {
     //当未获取到数据时展示的页面
     @BindView(R.id.order_no_data)
     TextView no_data;
+    @BindView(R.id.top_title)
+    TextView top_title;
 
     //通用的适配器
     private CommonAdapter adapter;
@@ -71,6 +77,7 @@ public class OrderActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        top_title.setText("我买入的");
               getData();
     }
 
@@ -106,6 +113,17 @@ public class OrderActivity extends BaseActivity {
                 } else {
                     showLongToast("拉取数据失败！");
                 }
+                break;
+            }
+        }
+    }
+
+
+    @OnClick(R.id.top_back)
+    public void OnClick(View view){
+        switch (view.getId()){
+            case R.id.top_back:{
+                finish();
                 break;
             }
         }

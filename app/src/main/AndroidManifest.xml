@@ -32,7 +32,9 @@
         <activity android:name=".home.ShellActivity" />
         <activity android:name=".home.SetupActivity" />
         <activity android:name=".home.IssueActivity" />
-        <activity android:name=".home.NoticeCommentActivity"></activity>
+        <activity android:name=".home.NoticeCommentActivity" />
+        <activity android:name=".home.UserMessageActivity" />
+        <activity android:name=".home.CreateResourceActivity"></activity>
     </application>
 
 </manifest>

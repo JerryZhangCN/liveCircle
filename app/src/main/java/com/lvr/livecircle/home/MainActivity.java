@@ -25,22 +25,34 @@ import com.bumptech.glide.Glide;
 import com.lvr.livecircle.R;
 import com.lvr.livecircle.adapter.HomeViewPagerAdapter;
 import com.lvr.livecircle.base.BaseActivity;
+import com.lvr.livecircle.bean.BaseResponse;
 import com.lvr.livecircle.bean.Cache;
+import com.lvr.livecircle.bean.ObjectEvent;
 import com.lvr.livecircle.bean.Order;
+import com.lvr.livecircle.bean.ResourceType;
+import com.lvr.livecircle.bean.Resources;
+import com.lvr.livecircle.bean.STS;
+import com.lvr.livecircle.bean.User;
+import com.lvr.livecircle.home.present.RegisterPresent;
+import com.lvr.livecircle.home.present.RegisterPresentImpl;
 import com.lvr.livecircle.meitu.RecommendFragment;
 import com.lvr.livecircle.music.OrderFragment;
 import com.lvr.livecircle.music.ShellFragment;
 import com.lvr.livecircle.recommend.MyResourceFragment;
 import com.lvr.livecircle.utils.StatusBarSetting;
+import com.lvr.livecircle.utils.StatusCode;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 public class MainActivity extends BaseActivity {
 
@@ -81,7 +93,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initPresenter() {
-
+        startProgressDialog();
+        RegisterPresent registerPresent=new RegisterPresentImpl();
+        registerPresent.getSTS(new Resources());
+        registerPresent.getResourceType(new Resources());
     }
 
     @Override
@@ -177,6 +192,17 @@ public class MainActivity extends BaseActivity {
         mn_order = footView.getItem(2);
         mn_shell = footView.getItem(3);
         mn_out = footView.getItem(4);
+        mn_msg.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if (!isLogin) {
+                    showLongToast("您尚未登录，请登录");
+                    return false;
+                }
+                startActivity(UserMessageActivity.class);
+                return true;
+            }
+        });
         mn_setup.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -223,6 +249,34 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEvent(ObjectEvent event) {
+        switch (event.getType()) {
+            case StatusCode.getSTS: {
+                stopProgressDialog();
+                STS sts= (STS) event.getObject();
+                if (sts.getCode().equals("1")) {
+                  showShortToast("获取STS服务成功");
+                  Cache.getInstance().setSts((STS) event.getObject());
+                } else {
+                    showLongToast("获取STS服务失败！");
+                }
+                break;
+            }
+            case StatusCode.getResourceType: {
+                stopProgressDialog();
+                if (((BaseResponse)event.getObject()).getCode()==1) {
+                    showShortToast("获取资源类别成功");
+                    BaseResponse baseResponse = (BaseResponse) event.getObject();
+                    Cache.getInstance().setResourceTypes((List<ResourceType>) baseResponse.getInfo());
+                } else {
+                    showLongToast("获取资源类别失败！");
+                }
+                break;
+            }
+        }
     }
 
 

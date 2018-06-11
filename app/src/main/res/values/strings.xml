@@ -53,9 +53,19 @@
     <string name="resource_credit">需要信用值:</string>
     <string name="resource_user_name">发布人:</string>
     <string name="resource_order">下单</string>
+    <string name="resource_name">资源名称</string>
+    <string name="resource_type">资源类别</string>
+    <string name="resource_setup">发布资源</string>
 
     <!-- 通告 -->
     <string name="notice_comment">评论列表:</string>
     <string name="push_comment">发布评论</string>
     <string name="my_comment">我的精彩评论</string>
+
+
+    <!-- 用户 -->
+
+    <string name="user_pic">头像</string>
+    <string name="user_name">用户名</string>
+    <string name="set_up">发布新资源</string>
 </resources>

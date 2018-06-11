@@ -15,6 +15,14 @@ public class Resources {
     private String resources_id;
     private String notice_id;
     private String content;
+    private String resources_type_id;
+    private String cmt;
+    private String img1;
+    private String img2;
+    private String img3;
+    private String price;
+    private String credit_number;
+
 
     public int getPage() {
         return page;
@@ -94,5 +102,61 @@ public class Resources {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getResources_type_id() {
+        return resources_type_id;
+    }
+
+    public void setResources_type_id(String resources_type_id) {
+        this.resources_type_id = resources_type_id;
+    }
+
+    public String getCmt() {
+        return cmt;
+    }
+
+    public void setCmt(String cmt) {
+        this.cmt = cmt;
+    }
+
+    public String getImg1() {
+        return img1;
+    }
+
+    public void setImg1(String img1) {
+        this.img1 = img1;
+    }
+
+    public String getImg2() {
+        return img2;
+    }
+
+    public void setImg2(String img2) {
+        this.img2 = img2;
+    }
+
+    public String getImg3() {
+        return img3;
+    }
+
+    public void setImg3(String img3) {
+        this.img3 = img3;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getCredit_number() {
+        return credit_number;
+    }
+
+    public void setCredit_number(String credit_number) {
+        this.credit_number = credit_number;
     }
 }

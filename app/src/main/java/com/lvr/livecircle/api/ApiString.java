@@ -19,7 +19,7 @@ public class ApiString {
     //获取用户发布的资源
     public static final String getMyResource="/m/resourcesApi/listResourcesByUser";
     //获取用户的订单列表
-    public static final String getMyOrderList="/m/orderApi/listMyOrderOnMerchant";
+    public static final String getMyOrderList="/m/orderApi/listMyOrderOnConsume";
     //根据ID获取资源信息
     public static final String getResourceById="/m/resourcesApi/getResourcesById";
     //下订单
@@ -32,4 +32,13 @@ public class ApiString {
     public static final String getNoticeComment="/m/pageApi/listNoticMessage";
     //获取通告评论
     public static final String pushComment="/m/pageApi/commentNotic";
+    //获取STS数据
+    public static final String getSTS="/m/indexApi/ossTokenSTS";
+    //更新用户信息
+    public static final String uploadUserMsg="/m/userApi/updateUserInfo";
+    //获取资源类型
+    public static final String getResourceType="/m/ResourcesApi/listResourcesType";
+
+    //获取资源类型
+    public static final String createResource="/m/ResourcesApi/addResources";
 }

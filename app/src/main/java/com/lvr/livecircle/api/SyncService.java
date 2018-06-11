@@ -5,8 +5,10 @@ import com.lvr.livecircle.bean.BaseResponse;
 import com.lvr.livecircle.bean.Notice;
 import com.lvr.livecircle.bean.NoticeComment;
 import com.lvr.livecircle.bean.Order;
+import com.lvr.livecircle.bean.ResourceType;
 import com.lvr.livecircle.bean.Resources;
 import com.lvr.livecircle.bean.ResponseResource;
+import com.lvr.livecircle.bean.STS;
 import com.lvr.livecircle.bean.User;
 import java.util.List;
 
@@ -121,5 +123,41 @@ public interface SyncService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.pushComment)
     Call<BaseResponse> pushComment(@Body Resources resources);
+
+    /**
+     * 获取STS数据
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.getSTS)
+    Call<STS> getSTS(@Body Resources resources);
+
+    /**
+     * 更新用户信息
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.uploadUserMsg)
+    Call<BaseResponse> updateUserMsg(@Body User user);
+
+    /**
+     * 获取资源类别
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.getResourceType)
+    Call<BaseResponse<List<ResourceType>>> getResourceType(@Body Resources resources);
+
+    /**
+     * 创建资源
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.createResource)
+    Call<BaseResponse> createResource(@Body Resources resources);
 }
 

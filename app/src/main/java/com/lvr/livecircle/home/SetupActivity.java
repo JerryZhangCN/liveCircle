@@ -1,11 +1,13 @@
 package com.lvr.livecircle.home;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -20,6 +22,7 @@ import com.lvr.livecircle.bean.Cache;
 import com.lvr.livecircle.bean.ObjectEvent;
 import com.lvr.livecircle.bean.Resources;
 import com.lvr.livecircle.bean.ResponseResource;
+import com.lvr.livecircle.bean.User;
 import com.lvr.livecircle.home.present.RegisterPresent;
 import com.lvr.livecircle.home.present.RegisterPresentImpl;
 import com.lvr.livecircle.utils.DateUtil;
@@ -32,11 +35,16 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
+
+/**
+ * 我的资源页面
+ */
 
 public class SetupActivity extends BaseActivity {
     //当前页面数（第一次加载默认为1）
@@ -49,6 +57,8 @@ public class SetupActivity extends BaseActivity {
     //当未获取到数据时展示的页面
     @BindView(R.id.my_resource_no_data)
     TextView no_data;
+    @BindView(R.id.top_title)
+    TextView top_title;
 
     //通用的适配器
     private CommonAdapter adapter;
@@ -58,7 +68,7 @@ public class SetupActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setup);
+        initView();
     }
 
     @Override
@@ -73,6 +83,7 @@ public class SetupActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        top_title.setText("我的发布");
            getData();
     }
 
@@ -90,9 +101,27 @@ public class SetupActivity extends BaseActivity {
         }
         Resources resources=new Resources();
         resources.setPage(mStartPage);
-        resources.setName(Cache.getInstance().getUser().getUser_name());
+        resources.setName(Cache.getInstance().getUser().getUser_id());
         RegisterPresent present=new RegisterPresentImpl();
         present.getMyResource(resources);
+    }
+
+    /**
+     * 点击事件
+     * @param view
+     */
+    @OnClick({R.id.top_back,R.id.button_set_up})
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.top_back:{
+                finish();
+                break;
+            }
+            case R.id.button_set_up:{
+              startActivity(CreateResourceActivity.class);
+                break;
+            }
+        }
     }
 
 
@@ -168,24 +197,4 @@ public class SetupActivity extends BaseActivity {
             }
         });
     }
-
-    /**
-     * 为解决泛型传递集合时出现解析异常所使用的工具类
-     * @param json
-     * @param t
-     * @param <T>
-     * @return
-     */
-    public static <T> List<T> jsonToBeanList(String json, Class<T> t) {
-        List<T> list = new ArrayList<>();
-        JsonParser parser = new JsonParser();
-        JsonArray jsonarray = parser.parse(json).getAsJsonArray();
-        for (JsonElement element : jsonarray
-                ) {
-            list.add(new Gson().fromJson(element, t));
-        }
-        return list;
-    }
-
-
 }

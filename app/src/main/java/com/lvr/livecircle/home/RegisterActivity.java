@@ -140,7 +140,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void initCalender(final Date input, final TextView textView) {
         Calendar endDate = Calendar.getInstance();
-        startDate.set(2000, 0, 1);
+        startDate.set(1950, 0, 1);
         endDate.setTime(new Date());
         TimePickerView pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override

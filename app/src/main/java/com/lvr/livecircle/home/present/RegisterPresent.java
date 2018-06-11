@@ -21,4 +21,8 @@ public interface RegisterPresent {
     void getNoticeList(Resources resources);
     void getNoticeComment(Resources resources);
     void pushNoticeComment(Resources resources);
+    void getSTS(Resources resources);
+    void updateUserMsg(User user);
+    void getResourceType(Resources resources);
+    void createResource(Resources resources);
 }
