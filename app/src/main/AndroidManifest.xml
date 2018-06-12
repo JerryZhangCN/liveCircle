@@ -34,7 +34,8 @@
         <activity android:name=".home.IssueActivity" />
         <activity android:name=".home.NoticeCommentActivity" />
         <activity android:name=".home.UserMessageActivity" />
-        <activity android:name=".home.CreateResourceActivity"></activity>
+        <activity android:name=".home.CreateResourceActivity" />
+        <activity android:name=".home.CollectionActivity"></activity>
     </application>
 
 </manifest>

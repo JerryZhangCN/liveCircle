@@ -32,6 +32,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public EditText ed_loginName;
     @BindView(R.id.ed_password)
     public EditText ed_password;
+    @BindView(R.id.top_done)
+    TextView top_down;
 
 
     @Override
@@ -46,7 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void initView() {
-
+       top_down.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.top_back, R.id.top_done, R.id.btn_login})

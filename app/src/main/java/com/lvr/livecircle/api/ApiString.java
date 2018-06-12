@@ -38,7 +38,11 @@ public class ApiString {
     public static final String uploadUserMsg="/m/userApi/updateUserInfo";
     //获取资源类型
     public static final String getResourceType="/m/ResourcesApi/listResourcesType";
-
-    //获取资源类型
+    //发布资源
     public static final String createResource="/m/ResourcesApi/addResources";
+    //获取用户收藏资源列表
+    public static final String getCollectionList="/m/userApi/listCollection";
+    //收藏资源
+    public static final String collectionResource="/m/userApi/collectionResources";
+
 }

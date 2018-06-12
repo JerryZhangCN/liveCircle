@@ -159,5 +159,21 @@ public interface SyncService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.createResource)
     Call<BaseResponse> createResource(@Body Resources resources);
+    /**
+     * 获取收藏资源列表
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.getCollectionList)
+    Call<BaseResponse<List<ResponseResource>>> getCollectionResource(@Body Resources resources);
+    /**
+     * 创建资源
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.collectionResource)
+    Call<BaseResponse> collectionResource(@Body Resources resources);
 }
 

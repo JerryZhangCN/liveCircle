@@ -16,6 +16,8 @@ public class ResponseResource implements Serializable{
     private String img3;
     private String id;
     private String user_name;
+    private String cid;
+    private String rid;
     //描述
     private String cmt;
 
@@ -98,5 +100,21 @@ public class ResponseResource implements Serializable{
 
     public void setCmt(String cmt) {
         this.cmt = cmt;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
     }
 }

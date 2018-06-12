@@ -25,4 +25,6 @@ public interface RegisterPresent {
     void updateUserMsg(User user);
     void getResourceType(Resources resources);
     void createResource(Resources resources);
+    void getUserCollection(Resources resources);
+    void collectionResource(Resources resources);
 }

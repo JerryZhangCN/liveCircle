@@ -57,8 +57,13 @@ public class ResourceActivity extends BaseActivity {
     String price;
     @BindString(R.string.resource_user_name)
     String user_name;
+    @BindView(R.id.top_title)
+    TextView top_title;
 
-    private String resources_id=null;
+
+    private String resources_id = null;
+    private ResponseResource responseResource;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +88,17 @@ public class ResourceActivity extends BaseActivity {
                     showLongToast("下单成功！");
                     finish();
                 } else {
-                    showLongToast("下单失败！");
+                    showLongToast(((BaseResponse) event.getObject()).getMsg());
+                }
+                break;
+            }
+            case StatusCode.collectionResource: {
+                stopProgressDialog();
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
+                    showLongToast("收藏成功！");
+                    finish();
+                } else {
+                    showLongToast(((BaseResponse) event.getObject()).getMsg());
                 }
                 break;
             }
@@ -97,7 +112,7 @@ public class ResourceActivity extends BaseActivity {
 
     @Override
     public void initPresenter() {
-
+        top_title.setText("资源详情");
     }
 
     @Override
@@ -110,7 +125,7 @@ public class ResourceActivity extends BaseActivity {
         present.getResourceById(resources);
     }
 
-    @OnClick(R.id.button_create_order)
+    @OnClick({R.id.button_create_order, R.id.button_collection_order, R.id.top_back})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.button_create_order: {
@@ -118,20 +133,46 @@ public class ResourceActivity extends BaseActivity {
                     showLongToast("您尚未登录，无法下单！");
                     return;
                 }
+                if (responseResource.getUser_name().equals(Cache.getInstance().getUser().getUser_name())) {
+                    showLongToast("无法购买自己发布的资源！");
+                    return;
+                }
                 Resources resources = new Resources();
                 resources.setResources_id(resources_id);
                 resources.setUser_id(Cache.getInstance().getUser().getUser_id());
-                RegisterPresent present=new RegisterPresentImpl();
+                RegisterPresent present = new RegisterPresentImpl();
                 present.createOrder(resources);
+                break;
+            }
+            case R.id.button_collection_order: {
+                if (Cache.getInstance().getUser() == null) {
+                    showLongToast("您尚未登录，无法进行收藏操作！");
+                    return;
+                }
+                if (responseResource.getUser_name().equals(Cache.getInstance().getUser().getUser_name())) {
+                    showLongToast("无法收藏自己发布的资源！");
+                    return;
+                }
+                Resources resources = new Resources();
+                resources.setResources_id(resources_id);
+                resources.setUser_id(Cache.getInstance().getUser().getUser_id());
+                RegisterPresent present = new RegisterPresentImpl();
+                present.collectionResource(resources);
+                break;
+            }
+            case R.id.top_back: {
+                finish();
+                break;
             }
         }
+
     }
 
     private void initData(List<ResponseResource> responseResources) {
         if (responseResources.size() == 0 || responseResources == null)
             return;
-        ResponseResource responseResource = responseResources.get(0);
-        resources_id=responseResource.getId();
+        responseResource = responseResources.get(0);
+        resources_id = responseResource.getId();
         if (responseResource.getImg1() != null) {
             resource_img.setVisibility(View.VISIBLE);
             Glide.with(this).load(responseResource.getImg1()).into(resource_img);

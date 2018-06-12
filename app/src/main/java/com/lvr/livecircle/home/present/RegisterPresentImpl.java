@@ -99,6 +99,16 @@ public class RegisterPresentImpl implements RegisterPresent {
         doConnect(StatusCode.createResource, resources);
     }
 
+    @Override
+    public void getUserCollection(Resources resources) {
+        doConnect(StatusCode.getCollectionResource, resources);
+    }
+
+    @Override
+    public void collectionResource(Resources resources) {
+        doConnect(StatusCode.collectionResource, resources);
+    }
+
 
     /**
      * 网络请求
@@ -194,6 +204,16 @@ public class RegisterPresentImpl implements RegisterPresent {
                         case StatusCode.createResource: {
                             Response<BaseResponse> resourceResponse = syncService.createResource((Resources) object).execute();
                             EventBus.getDefault().post(new ObjectEvent<>(StatusCode.createResource, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.getCollectionResource: {
+                            Response<BaseResponse<List<ResponseResource>>> resourceResponse = syncService.getCollectionResource((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getCollectionResource, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.collectionResource: {
+                            Response<BaseResponse> resourceResponse = syncService.collectionResource((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.collectionResource, resourceResponse.body(), true));
                             break;
                         }
                     }

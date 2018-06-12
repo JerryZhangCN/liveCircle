@@ -5,27 +5,27 @@
 
         <item
             android:id="@+id/mn_msg"
-            android:title="我的资料"
-            android:icon="@drawable/menu_personal"></item>
+            android:icon="@drawable/menu_personal"
+            android:title="我的资料"></item>
         <item
             android:id="@+id/mn_setup"
-            android:title="发布资源"
             android:icon="@drawable/menu_setting"
-            ></item>
+            android:title="发布资源"></item>
         <item
             android:id="@+id/mn_order"
-            android:title="我买入的"
             android:icon="@drawable/menu_home"
-            ></item>
+            android:title="我买入的"></item>
         <item
             android:id="@+id/mn_shell"
-            android:title="我卖出的"
             android:icon="@drawable/menu_store"
-            ></item>
+            android:title="我卖出的"></item>
+        <item
+            android:id="@+id/mn_collection"
+            android:icon="@drawable/menu_store"
+            android:title="我的收藏"></item>
         <item
             android:id="@+id/mn_out"
             android:icon="@drawable/menu_out"
-            android:title="注销"
-            ></item>
+            android:title="注销"></item>
     </group>
 </menu>

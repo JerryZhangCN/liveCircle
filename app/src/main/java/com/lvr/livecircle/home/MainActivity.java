@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity {
     private MenuItem mn_setup;
     private MenuItem mn_order;
     private MenuItem mn_shell;
+    private MenuItem mn_collection;
     private MenuItem mn_out;
     private TextView tv_login;
     @BindString(R.string.credit)
@@ -191,7 +192,9 @@ public class MainActivity extends BaseActivity {
         mn_setup = footView.getItem(1);
         mn_order = footView.getItem(2);
         mn_shell = footView.getItem(3);
-        mn_out = footView.getItem(4);
+        mn_collection = footView.getItem(4);
+        mn_out = footView.getItem(5);
+
         mn_msg.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -233,6 +236,17 @@ public class MainActivity extends BaseActivity {
                     return false;
                 }
                 startActivity(ShellActivity.class);
+                return true;
+            }
+        });
+        mn_collection.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if (!isLogin) {
+                    showLongToast("您尚未登录，请登录");
+                    return false;
+                }
+                startActivity(CollectionActivity.class);
                 return true;
             }
         });

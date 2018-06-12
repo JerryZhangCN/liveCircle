@@ -56,6 +56,7 @@
     <string name="resource_name">资源名称</string>
     <string name="resource_type">资源类别</string>
     <string name="resource_setup">发布资源</string>
+    <string name="collection_resource">收藏</string>
 
     <!-- 通告 -->
     <string name="notice_comment">评论列表:</string>

@@ -75,6 +75,7 @@
             android:layout_marginTop="@dimen/hint_0.5x"
             android:gravity="right"
             android:text="@string/forget_password"
+            android:visibility="gone"
             android:textSize="@dimen/text_size_6px" />
 
         <Button

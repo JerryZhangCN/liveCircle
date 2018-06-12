@@ -45,4 +45,8 @@ public class StatusCode {
     public static final int getImg3=724;
     //创建资源
     public static final int createResource=725;
+    //获取收藏资源列表
+    public static final int getCollectionResource=726;
+    //创建资源
+    public static final int collectionResource=727;
 }
