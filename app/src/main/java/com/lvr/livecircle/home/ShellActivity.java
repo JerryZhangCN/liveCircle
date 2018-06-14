@@ -195,7 +195,7 @@ public class ShellActivity extends BaseActivity {
                 resources.setPage(mStartPage);
                 resources.setUser_id(Cache.getInstance().getUser().getUser_id());
                 RegisterPresent present = new RegisterPresentImpl();
-                present.getMyOrderList(resources);
+                present.getMyShellList(resources);
             }
         });
     }

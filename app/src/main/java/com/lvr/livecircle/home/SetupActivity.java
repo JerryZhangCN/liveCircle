@@ -50,7 +50,7 @@ public class SetupActivity extends BaseActivity {
     //当前页面数（第一次加载默认为1）
     private int mStartPage = 1;
     //每页元素个数（默认为10）
-    private int maxNumber= 10;
+    private int maxNumber = 10;
     //绑定列表展示用的recycle
     @BindView(R.id.my_source_recycle)
     XRecyclerView xRecyclerView;
@@ -63,12 +63,11 @@ public class SetupActivity extends BaseActivity {
     //通用的适配器
     private CommonAdapter adapter;
     //返回资源容器
-    private List<ResponseResource> results=new ArrayList<>();
+    private List<ResponseResource> results = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
     }
 
     @Override
@@ -84,14 +83,13 @@ public class SetupActivity extends BaseActivity {
     @Override
     public void initView() {
         top_title.setText("我的发布");
-           getData();
     }
 
     /**
      * 调用present来访问api以获取数据
      */
-    private void getData(){
-        if(Cache.getInstance().getUser()==null)
+    private void getData() {
+        if (Cache.getInstance().getUser() == null)
             return;
         mStartPage = 1;
         results.clear();
@@ -99,26 +97,27 @@ public class SetupActivity extends BaseActivity {
             adapter.notifyDataSetChanged();
             adapter = null;
         }
-        Resources resources=new Resources();
+        Resources resources = new Resources();
         resources.setPage(mStartPage);
         resources.setUser_id(Cache.getInstance().getUser().getUser_id());
-        RegisterPresent present=new RegisterPresentImpl();
+        RegisterPresent present = new RegisterPresentImpl();
         present.getMyResource(resources);
     }
 
     /**
      * 点击事件
+     *
      * @param view
      */
-    @OnClick({R.id.top_back,R.id.button_set_up})
+    @OnClick({R.id.top_back, R.id.button_set_up})
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.top_back:{
+        switch (view.getId()) {
+            case R.id.top_back: {
                 finish();
                 break;
             }
-            case R.id.button_set_up:{
-              startActivity(CreateResourceActivity.class);
+            case R.id.button_set_up: {
+                startActivity(CreateResourceActivity.class);
                 break;
             }
         }
@@ -130,13 +129,18 @@ public class SetupActivity extends BaseActivity {
         switch (event.getType()) {
             case StatusCode.getMyResources: {
                 stopProgressDialog();
-                if (((BaseResponse)event.getObject()).getCode()==1) {
+                xRecyclerView.loadMoreComplete();
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
                     mStartPage++;
-                    BaseResponse baseResponse= (BaseResponse) event.getObject();
+                    BaseResponse baseResponse = (BaseResponse) event.getObject();
+                    if (adapter != null) {
+                        results.addAll((List<ResponseResource>) baseResponse.getInfo());
+                        adapter.notifyDataSetChanged();
+                    } else
 //                    Gson gson = new Gson();
 //                    String json = gson.toJson(baseResponse.getInfo());
 //                    List<ResponseResource> responseResources=jsonToBeanList(json,ResponseResource.class);
-                    initChangeRecycle((List<ResponseResource>) baseResponse.getInfo());
+                        initChangeRecycle((List<ResponseResource>) baseResponse.getInfo());
                 } else {
                     showLongToast("拉取数据失败！");
                 }
@@ -148,6 +152,7 @@ public class SetupActivity extends BaseActivity {
 
     /**
      * 初始化列表
+     *
      * @param resources
      */
     private void initChangeRecycle(final List<ResponseResource> resources) {
@@ -170,10 +175,10 @@ public class SetupActivity extends BaseActivity {
             @Override
             protected void convert(ViewHolder holder, ResponseResource responseResource, int position) {
                 Glide.with(SetupActivity.this).load(responseResource.getImg1()).into((ImageView) holder.getView(R.id.resource_img));
-                holder.setText(R.id.resource_name,responseResource.getName());
-                holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())),DateUtil.FORMAT_DEFAULT));
+                holder.setText(R.id.resource_name, responseResource.getName());
+                holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())), DateUtil.FORMAT_DEFAULT));
                 holder.setText(R.id.resource_credit, responseResource.getCredit_number());
-                holder.setText(R.id.resource_price,responseResource.getPrice());
+                holder.setText(R.id.resource_price, responseResource.getPricenew());
             }
         };
         xRecyclerView.setAdapter(adapter);
@@ -182,21 +187,23 @@ public class SetupActivity extends BaseActivity {
             public void onRefresh() {
                 getData();
             }
+
             @Override
             public void onLoadMore() {
-                if ( resources.size()<maxNumber) {
-                    showShortToast( "没有更多了");
+                if (resources.size() < maxNumber) {
+                    showShortToast("没有更多了");
                     xRecyclerView.loadMoreComplete();
                     return;
                 }
-                Resources resources=new Resources();
+                Resources resources = new Resources();
                 resources.setPage(mStartPage);
                 resources.setUser_id(Cache.getInstance().getUser().getUser_name());
-                RegisterPresent present=new RegisterPresentImpl();
+                RegisterPresent present = new RegisterPresentImpl();
                 present.getMyResource(resources);
             }
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();

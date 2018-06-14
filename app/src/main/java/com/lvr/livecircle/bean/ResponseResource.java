@@ -10,7 +10,7 @@ public class ResponseResource implements Serializable{
     private String name;
     private String add_time;
     private String credit_number;
-    private String price;
+    private String pricenew;
     private String img1;
     private String img2;
     private String img3;
@@ -46,12 +46,12 @@ public class ResponseResource implements Serializable{
         this.credit_number = credit_number;
     }
 
-    public String getPrice() {
-        return price;
+    public String getPricenew() {
+        return pricenew;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPricenew(String pricenew) {
+        this.pricenew = pricenew;
     }
 
     public String getImg1() {

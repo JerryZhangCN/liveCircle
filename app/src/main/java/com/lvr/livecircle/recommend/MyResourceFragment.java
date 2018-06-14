@@ -141,7 +141,7 @@ public class MyResourceFragment extends BaseFragment {
                 holder.setText(R.id.resource_name,responseResource.getName());
                 holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())),DateUtil.FORMAT_DEFAULT));
                 holder.setText(R.id.resource_credit, responseResource.getCredit_number());
-                holder.setText(R.id.resource_price,responseResource.getPrice());
+                holder.setText(R.id.resource_price,responseResource.getPricenew());
             }
         };
         xRecyclerView.setAdapter(adapter);

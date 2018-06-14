@@ -58,7 +58,7 @@ public interface SyncService {
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.getMyResource)
-    Call<BaseResponse<List<Resources>>> getMyResource(@Body Resources resources);
+    Call<BaseResponse<List<ResponseResource>>> getMyResource(@Body Resources resources);
 
 
     /**

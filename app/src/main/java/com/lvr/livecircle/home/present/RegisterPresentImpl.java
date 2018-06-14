@@ -141,7 +141,7 @@ public class RegisterPresentImpl implements RegisterPresent {
                             break;
                         }
                         case StatusCode.getMyResources: {
-                            Response<BaseResponse<List<Resources>>> resourceResponse = syncService.getMyResource((Resources) object).execute();
+                            Response<BaseResponse<List<ResponseResource>>> resourceResponse = syncService.getMyResource((Resources) object).execute();
                             EventBus.getDefault().post(new ObjectEvent<>(StatusCode.getMyResources, resourceResponse.body(), true));
                             break;
                         }

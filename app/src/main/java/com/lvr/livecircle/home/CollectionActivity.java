@@ -74,7 +74,7 @@ public class CollectionActivity extends BaseActivity {
     @Override
     public void initView() {
         top_title.setText("我的收藏");
-        getData();
+//        getData();
     }
 
 
@@ -150,7 +150,7 @@ public class CollectionActivity extends BaseActivity {
                 holder.setText(R.id.resource_name, responseResource.getName());
                 holder.setVisible(R.id.resource_add_time,false);
                 holder.setText(R.id.resource_credit, responseResource.getCredit_number());
-                holder.setText(R.id.resource_price, responseResource.getPrice());
+                holder.setText(R.id.resource_price, responseResource.getPricenew());
                 holder.setOnClickListener(R.id.product_item, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

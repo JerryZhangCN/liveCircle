@@ -188,7 +188,7 @@ public class ResourceActivity extends BaseActivity {
         resource_name.setText(responseResource.getName());
         resource_hint.setText(responseResource.getCmt());
         resource_time.setText(time + DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())), DateUtil.FORMAT_DEFAULT));
-        resource_price.setText(price + responseResource.getPrice());
+        resource_price.setText(price + responseResource.getPricenew());
         resource_user_name.setText(user_name + responseResource.getUser_name());
         resource_credit.setText(credit + responseResource.getCredit_number());
     }
