@@ -165,7 +165,7 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
                     resource_types.add(resourceType.getName());
                 }
                 //参数包括( 句柄， 下拉列表显示方式layout（这里采用系统自带的), 下拉列表中的文本id值， 待显示的字符串数组 )；
-                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, android.R.id.text1, resource_types);
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), R.layout.spinner, android.R.id.text1, resource_types);
                 resource_type.setAdapter(adapter1);
                 resource_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
