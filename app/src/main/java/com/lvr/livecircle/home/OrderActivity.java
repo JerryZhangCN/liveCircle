@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +24,8 @@ import com.lvr.livecircle.bean.Resources;
 import com.lvr.livecircle.home.present.RegisterPresent;
 import com.lvr.livecircle.home.present.RegisterPresentImpl;
 import com.lvr.livecircle.utils.DateUtil;
+import com.lvr.livecircle.utils.DialogTwoButtonClickListener;
+import com.lvr.livecircle.utils.DialogUtil;
 import com.lvr.livecircle.utils.StatusCode;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -43,7 +46,7 @@ import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 /**
  * 我的买入订单页面
  */
-public class OrderActivity extends BaseActivity {
+public class OrderActivity extends BaseActivity implements DialogTwoButtonClickListener{
     //当前页面数（第一次加载默认为1）
     private int mStartPage = 1;
     //每页元素个数（默认为10）
@@ -60,6 +63,9 @@ public class OrderActivity extends BaseActivity {
     private CommonAdapter adapter;
     //返回资源容器
     private List<Order> results = new ArrayList<>();
+
+    private Order checkOrder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +84,7 @@ public class OrderActivity extends BaseActivity {
     @Override
     public void initView() {
         top_title.setText("我买入的");
-              getData();
+        getData();
     }
 
 
@@ -86,6 +92,7 @@ public class OrderActivity extends BaseActivity {
      * 调用present来访问api以获取数据
      */
     private void getData() {
+        startProgressDialog();
         if (Cache.getInstance().getUser() == null)
             return;
         mStartPage = 1;
@@ -115,14 +122,24 @@ public class OrderActivity extends BaseActivity {
                 }
                 break;
             }
+            case StatusCode.deleteBuyOrder: {
+                stopProgressDialog();
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
+                    showShortToast("订单取消成功！");
+                  getData();
+                } else {
+                    showLongToast("操作订单失败！");
+                }
+                break;
+            }
         }
     }
 
 
     @OnClick(R.id.top_back)
-    public void OnClick(View view){
-        switch (view.getId()){
-            case R.id.top_back:{
+    public void OnClick(View view) {
+        switch (view.getId()) {
+            case R.id.top_back: {
                 finish();
                 break;
             }
@@ -153,16 +170,27 @@ public class OrderActivity extends BaseActivity {
         xRecyclerView.setLoadingMoreEnabled(true);
         adapter = new CommonAdapter<Order>(this, R.layout.order, results) {
             @Override
-            protected void convert(ViewHolder holder, Order order, int position) {
+            protected void convert(ViewHolder holder, final Order order, int position) {
                 Glide.with(OrderActivity.this).load(order.getResources_img1()).into((ImageView) holder.getView(R.id.order_img));
                 holder.setText(R.id.order_number, order.getOrderno());
                 holder.setText(R.id.order_time, DateUtil.date2Str(new Date(Long.parseLong(order.getItime())), DateUtil.FORMAT_DEFAULT));
                 holder.setText(R.id.order_name, order.getResources_name());
                 holder.setText(R.id.order_distribution, order.getShipping_status().equals("0") ? "未发货" : "已发货");
                 holder.setText(R.id.order_price, order.getResources_price());
+                holder.setVisible(R.id.order_sure, false);
+                holder.setVisible(R.id.order_delete, false);
                 switch (order.getOrder_status()) {
                     case "1": {
                         holder.setText(R.id.order_status, "进行中");
+                        holder.setVisible(R.id.order_delete, true);
+                        holder.setOnClickListener(R.id.order_delete, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                checkOrder=order;
+                                DialogUtil.showCheckDialog(OrderActivity.this,"取消订单","订单取消将无法恢复，请确认是否要取消订单？","是的","我再想想",StatusCode.deleteBuyOrder,OrderActivity.this);
+
+                            }
+                        });
                         break;
                     }
                     case "2": {
@@ -198,5 +226,25 @@ public class OrderActivity extends BaseActivity {
                 present.getMyOrderList(resources);
             }
         });
+    }
+
+
+    @Override
+    public void clickYes(int type) {
+        switch(type){
+            case StatusCode.deleteBuyOrder:{
+                startProgressDialog();
+                RegisterPresent registerPresent = new RegisterPresentImpl();
+                Resources resources1 = new Resources();
+                resources1.setId(checkOrder.getId());
+                resources1.setUser_id(Cache.getInstance().getUser().getUser_id());
+                registerPresent.deleteBuyOrder(resources1);
+            }
+        }
+    }
+
+    @Override
+    public void clickNo(int type) {
+
     }
 }

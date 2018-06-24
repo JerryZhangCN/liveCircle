@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initPresenter() {
         startProgressDialog();
-        RegisterPresent registerPresent=new RegisterPresentImpl();
+        RegisterPresent registerPresent = new RegisterPresentImpl();
         registerPresent.getSTS(new Resources());
         registerPresent.getResourceType(new Resources());
     }
@@ -179,14 +179,15 @@ public class MainActivity extends BaseActivity {
             user_credit.setVisibility(View.VISIBLE);
             tv_login.setVisibility(View.INVISIBLE);
         }
-        mIv_photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        if (!isLogin)
+            mIv_photo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
         Menu footView = mAmNv.getMenu();
         mn_msg = footView.getItem(0);
         mn_setup = footView.getItem(1);
@@ -270,10 +271,9 @@ public class MainActivity extends BaseActivity {
         switch (event.getType()) {
             case StatusCode.getSTS: {
                 stopProgressDialog();
-                STS sts= (STS) event.getObject();
+                STS sts = (STS) event.getObject();
                 if (sts.getCode().equals("1")) {
-                  showShortToast("获取STS服务成功");
-                  Cache.getInstance().setSts((STS) event.getObject());
+                    Cache.getInstance().setSts((STS) event.getObject());
                 } else {
                     showLongToast("获取STS服务失败！");
                 }
@@ -281,8 +281,7 @@ public class MainActivity extends BaseActivity {
             }
             case StatusCode.getResourceType: {
                 stopProgressDialog();
-                if (((BaseResponse)event.getObject()).getCode()==1) {
-                    showShortToast("获取资源类别成功");
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
                     BaseResponse baseResponse = (BaseResponse) event.getObject();
                     Cache.getInstance().setResourceTypes((List<ResourceType>) baseResponse.getInfo());
                 } else {

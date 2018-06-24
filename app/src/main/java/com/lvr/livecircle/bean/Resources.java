@@ -20,7 +20,7 @@ public class Resources {
     private String img1;
     private String img2;
     private String img3;
-    private String price;
+    private String pricenew;
     private String credit_number;
 
 
@@ -144,12 +144,12 @@ public class Resources {
         this.img3 = img3;
     }
 
-    public String getPrice() {
-        return price;
+    public String getPricenew() {
+        return pricenew;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPricenew(String pricenew) {
+        this.pricenew = pricenew;
     }
 
     public String getCredit_number() {

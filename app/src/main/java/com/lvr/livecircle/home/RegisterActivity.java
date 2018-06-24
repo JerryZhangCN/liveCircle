@@ -99,6 +99,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 Toast.makeText(this,checkParams(), Toast.LENGTH_SHORT).show();
                 return;
                 }
+                startProgressDialog();
                 User user=new User();
                 user.setUser_name(ed_userName.getText().toString().trim());
                 user.setEmali(ed_email.getText().toString().trim());

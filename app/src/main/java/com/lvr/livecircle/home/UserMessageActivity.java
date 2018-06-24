@@ -59,7 +59,7 @@ public class UserMessageActivity extends BaseActivity {
 
     private ImagePicker imagePicker;
     private String imagePath;
-    Calendar startDate=Calendar.getInstance();
+    Calendar startDate = Calendar.getInstance();
     private Date brith = new Date();
     private User user;
 
@@ -91,7 +91,7 @@ public class UserMessageActivity extends BaseActivity {
         Glide.with(UserMessageActivity.this).load(Cache.getInstance().getUser().getHead_img()).transform(new GlideCircleTransform(UserMessageActivity.this)).into((chose_user_pic));
     }
 
-    @OnClick({R.id.chose_user_pic, R.id.top_done, R.id.top_back,R.id.user_brith})
+    @OnClick({R.id.chose_user_pic, R.id.top_done, R.id.top_back, R.id.user_brith})
     public void clickEvents(View v) {
         switch (v.getId()) {
             case R.id.chose_user_pic: {
@@ -104,7 +104,11 @@ public class UserMessageActivity extends BaseActivity {
                     showShortToast("请输入完整信息");
                     return;
                 }
-                imagePath = ImgUpload.upload(imagePath);
+                startProgressDialog();
+                if (imagePath == null) {
+                    imagePath = Cache.getInstance().getUser().getHead_img();
+                } else
+                    imagePath = ImgUpload.upload(imagePath);
                 Log.d("上传图片成功", imagePath);
                 Glide.with(UserMessageActivity.this).load(imagePath).transform(new GlideCircleTransform(UserMessageActivity.this)).into((chose_user_pic));
                 user = Cache.getInstance().getUser();
@@ -120,8 +124,8 @@ public class UserMessageActivity extends BaseActivity {
                 finish();
                 break;
             }
-            case R.id.user_brith:{
-                initCalender(brith,user_bruth);
+            case R.id.user_brith: {
+                initCalender(brith, user_bruth);
                 break;
             }
             default:
@@ -135,10 +139,10 @@ public class UserMessageActivity extends BaseActivity {
         switch (event.getType()) {
             case StatusCode.updateUserMsg: {
                 stopProgressDialog();
-                if (((BaseResponse)event.getObject()).getCode()==1) {
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
                     showLongToast("修改用户信息成功！");
                     Cache.getInstance().setUser(user);
-                    Intent intent=new Intent(this,MainActivity.class);
+                    Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -206,7 +210,7 @@ public class UserMessageActivity extends BaseActivity {
                 .setDate(endDate)
                 .setRangDate(startDate, endDate)
                 .isCyclic(true)
-                .setLabel("年", "月", "日","时","分","秒")
+                .setLabel("年", "月", "日", "时", "分", "秒")
                 .isCenterLabel(true)
                 .setOutSideCancelable(false)
                 .build();

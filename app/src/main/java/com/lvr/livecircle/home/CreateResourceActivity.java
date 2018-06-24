@@ -80,12 +80,7 @@ public class CreateResourceActivity extends BaseActivity {
 
     @Override
     public void initPresenter() {
-//       resource_type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//           @Override
-//           public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//           }
-//       });
+
     }
 
     @OnClick({R.id.resource_img1,R.id.resource_img2,R.id.resource_img3, R.id.button_create_order,R.id.top_back})
@@ -111,6 +106,7 @@ public class CreateResourceActivity extends BaseActivity {
                     showShortToast("请输入完整信息");
                     return;
                 }
+                startProgressDialog();
                 if(imagePaths.size()>0)
                 for(Integer s:imagePaths.keySet()){
                     imagePaths.put(s,ImgUpload.upload(imagePaths.get(s)));
@@ -122,7 +118,7 @@ public class CreateResourceActivity extends BaseActivity {
                 resources.setImg1(imagePaths.get(1));
                 resources.setImg2(imagePaths.get(2));
                 resources.setImg3(imagePaths.get(3));
-                resources.setPrice(resource_price.getText().toString());
+                resources.setPricenew(resource_price.getText().toString());
                 resources.setCredit_number(resource_credit.getText().toString());
                 resources.setResources_type_id(Cache.getInstance().getResourceTypes().get(resource_type.getSelectedItemPosition()).getId());
                 RegisterPresent present = new RegisterPresentImpl();
@@ -215,16 +211,17 @@ public class CreateResourceActivity extends BaseActivity {
         imagePicker.setCrop(true);//允许裁剪（单选才有效）
         imagePicker.setSaveRectangle(false); //是否按矩形区域保存
         imagePicker.setSelectLimit(1);    //选中数量限制
-        imagePicker.setFocusWidth(800);   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setFocusHeight(800);  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setOutPutX(800);//保存文件的宽度。单位像素
-        imagePicker.setOutPutY(800);//保存文件的高度。单位像素
+        imagePicker.setFocusWidth(1800);   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+        imagePicker.setFocusHeight(1800);  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
+        imagePicker.setOutPutX(1800);//保存文件的宽度。单位像素
+        imagePicker.setOutPutY(1800);//保存文件的高度。单位像素
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);
         imagePicker.setMultiMode(false);
     }
 
     @Override
     public void initView() {
+        top_title.setText("发布资源");
         for(ResourceType resourceType:Cache.getInstance().getResourceTypes()){
             resource_types.add(resourceType.getName());
         }
@@ -234,7 +231,7 @@ public class CreateResourceActivity extends BaseActivity {
     }
 
     public boolean checkParams() {
-        if (resource_name.getText().toString() == null || resource_name.getText().toString() .equals("") || resource_cmt.getText().toString() == null || resource_cmt.getText().toString().equals("")|| resource_price.getText().toString() == null || resource_price.getText().toString() .equals("")|| resource_credit.getText().toString() == null || resource_credit.getText().toString() .equals(""))
+        if (imagePaths.size()<1||resource_name.getText().toString() == null || resource_name.getText().toString() .equals("") || resource_cmt.getText().toString() == null || resource_cmt.getText().toString().equals("")|| resource_price.getText().toString() == null || resource_price.getText().toString() .equals("")|| resource_credit.getText().toString() == null || resource_credit.getText().toString() .equals(""))
             return false;
         return true;
     }

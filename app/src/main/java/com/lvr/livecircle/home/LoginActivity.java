@@ -70,6 +70,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     Toast.makeText(this, "请输入账号密码！", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                startProgressDialog();
                 User user = new User();
                 user.setUser_name(ed_loginName.getText().toString().trim());
                 user.setUser_password(ed_password.getText().toString().trim());

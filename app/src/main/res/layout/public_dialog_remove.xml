@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <TextView
@@ -24,8 +25,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/color_gray" />
+            android:background="@color/black" />
         <TextView
+            android:id="@+id/dialog_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ship_tip"
@@ -34,7 +36,10 @@
             android:textSize="@dimen/text_size_8px"
             android:gravity="center"
             android:padding="@dimen/hint"/>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/black" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/hint_4x"
@@ -56,7 +61,7 @@
             <View
                 android:layout_width="0.1dp"
                 android:layout_height="match_parent"
-                android:background="@color/gray"></View>
+                android:background="@color/black"></View>
 
             <Button
                 android:id="@+id/remove_cancel"

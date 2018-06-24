@@ -28,4 +28,6 @@ public interface RegisterPresent {
     void getUserCollection(Resources resources);
     void collectionResource(Resources resources);
     void sureShip(Resources resources);
+    void deleteBuyOrder(Resources resources);
+    void deleteSellOrder(Resources resources);
 }

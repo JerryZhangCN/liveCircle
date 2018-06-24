@@ -71,8 +71,6 @@ public class NoticeCommentActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -130,6 +128,7 @@ public class NoticeCommentActivity extends BaseActivity {
             case StatusCode.getPushComment: {
                 stopProgressDialog();
                 if (((BaseResponse) event.getObject()).getCode() == 1) {
+                    ed_comment.setText("");
                     showLongToast("发表成功！");
                     getData();
                 } else {
@@ -155,6 +154,7 @@ public class NoticeCommentActivity extends BaseActivity {
                     showShortToast("请输入评论内容！");
                     return;
                 }
+                startProgressDialog();
                 Resources resources = new Resources();
                 resources.setNotice_id(notice.getId());
                 resources.setUser_id(Cache.getInstance().getUser().getUser_id());
@@ -188,7 +188,7 @@ public class NoticeCommentActivity extends BaseActivity {
         xRecyclerView.setRefreshProgressStyle(BallSpinFadeLoader);
         xRecyclerView.setLoadingMoreProgressStyle(BallBeat);
         xRecyclerView.setLayoutManager(layoutManager);
-        xRecyclerView.setLoadingMoreEnabled(true);
+        xRecyclerView.setLoadingMoreEnabled(false);
         adapter = new CommonAdapter<NoticeComment>(this, R.layout.notice_comment, results) {
             @Override
             protected void convert(ViewHolder holder, NoticeComment noticeComment, int position) {

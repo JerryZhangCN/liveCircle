@@ -114,6 +114,17 @@ public class RegisterPresentImpl implements RegisterPresent {
         doConnect(StatusCode.sureShip, resources);
     }
 
+    @Override
+    public void deleteBuyOrder(Resources resources) {
+        doConnect(StatusCode.deleteBuyOrder, resources);
+    }
+
+    @Override
+    public void deleteSellOrder(Resources resources) {
+        doConnect(StatusCode.deleteSellOrder, resources);
+    }
+
+
 
     /**
      * 网络请求
@@ -224,6 +235,16 @@ public class RegisterPresentImpl implements RegisterPresent {
                         case StatusCode.sureShip: {
                             Response<BaseResponse> resourceResponse = syncService.sureShip((Resources) object).execute();
                             EventBus.getDefault().post(new ObjectEvent<>(StatusCode.sureShip, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.deleteBuyOrder: {
+                            Response<BaseResponse> resourceResponse = syncService.deleteBuyOrder((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.deleteBuyOrder, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.deleteSellOrder: {
+                            Response<BaseResponse> resourceResponse = syncService.deleteSellOrder((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.deleteSellOrder, resourceResponse.body(), true));
                             break;
                         }
                     }

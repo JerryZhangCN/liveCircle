@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.aspsine.irecyclerview.OnLoadMoreListener;
@@ -18,7 +22,9 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lvr.livecircle.R;
 import com.lvr.livecircle.base.BaseFragment;
 import com.lvr.livecircle.bean.BaseResponse;
+import com.lvr.livecircle.bean.Cache;
 import com.lvr.livecircle.bean.ObjectEvent;
+import com.lvr.livecircle.bean.ResourceType;
 import com.lvr.livecircle.bean.Resources;
 import com.lvr.livecircle.bean.ResponseResource;
 import com.lvr.livecircle.home.ResourceActivity;
@@ -33,7 +39,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
@@ -53,16 +61,25 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
     //当未获取到数据时展示的页面
     @BindView(R.id.report_no_data)
     TextView no_data;
+    @BindView(R.id.resource_type)
+    Spinner resource_type;
+    @BindView(R.id.search_ed)
+    EditText editText;
 
     //通用的适配器
     private CommonAdapter adapter;
     //返回资源容器
     private List<ResponseResource> results = new ArrayList<>();
 
+    private String type;
+    private boolean isSearch = false;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_recommend;
     }
+
+    private List<String> resource_types = new ArrayList<>();
 
     @Override
     protected void initView() {
@@ -81,6 +98,8 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
         }
         Resources resources = new Resources();
         resources.setPage(mStartPage);
+        resources.setResources_type_id(type);
+        resources.setName(editText.getText().toString());
         RegisterPresent present = new RegisterPresentImpl();
         present.getResource(resources);
     }
@@ -98,6 +117,21 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
     @Override
     public void onRefresh() {
 
+    }
+
+    @OnClick(R.id.search)
+    public void OnClick(View view) {
+        switch (view.getId()) {
+            case R.id.search: {
+                if (isSearch) {
+                    getData();
+                    editText.setVisibility(View.INVISIBLE);
+                } else
+                    editText.setVisibility(View.VISIBLE);
+                isSearch = !isSearch;
+                break;
+            }
+        }
     }
 
 
@@ -123,7 +157,39 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
                 }
                 break;
             }
+            case StatusCode.getResourceType: {
+                BaseResponse baseResponse = (BaseResponse) event.getObject();
+                Cache.getInstance().setResourceTypes((List<ResourceType>) baseResponse.getInfo());
+                resource_types.add("全部类型");
+                for (ResourceType resourceType : Cache.getInstance().getResourceTypes()) {
+                    resource_types.add(resourceType.getName());
+                }
+                //参数包括( 句柄， 下拉列表显示方式layout（这里采用系统自带的), 下拉列表中的文本id值， 待显示的字符串数组 )；
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, android.R.id.text1, resource_types);
+                resource_type.setAdapter(adapter1);
+                resource_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (i == 0) {
+                            type = null;
+                            getData();
+                        } else {
+                            type = Cache.getInstance().getResourceTypes().get(i - 1).getId();
+                        }
+                        getData();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+
+                break;
+            }
         }
+
     }
 
 
@@ -182,6 +248,7 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
                 }
                 Resources resources = new Resources();
                 resources.setPage(mStartPage);
+                resources.setResources_type_id(type);
                 RegisterPresent present = new RegisterPresentImpl();
                 present.getResource(resources);
             }

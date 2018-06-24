@@ -19,15 +19,17 @@ import com.lvr.livecircle.R;
 
 public class DialogUtil {
     //选择dialog
-    public static void showCheckDialog(Context context, String info, String checkInfo, String cancelInfo, final int type, final DialogTwoButtonClickListener clickListener) {
+    public static void showCheckDialog(Context context, String info, String hint,String checkInfo, String cancelInfo, final int type, final DialogTwoButtonClickListener clickListener) {
         final Dialog dialog = new Dialog(context, R.style.MyDialog);
         dialog.setContentView(R.layout.public_dialog_remove);
         TextView msg = (TextView) dialog.getWindow().findViewById(R.id.dialog_msg);
+        TextView hintText=(TextView)dialog.getWindow().findViewById(R.id.dialog_hint);
         Button sure = (Button) dialog.getWindow().findViewById(R.id.remove_sure);
         Button cancel = (Button) dialog.getWindow().findViewById(R.id.remove_cancel);
         msg.setText(info);
         sure.setText(checkInfo);
         cancel.setText(cancelInfo);
+        hintText.setText(hint);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.public_shape_dialog);
         sure.setText(checkInfo);
         cancel.setText(cancelInfo);

@@ -10,6 +10,7 @@ import com.lvr.livecircle.bean.Resources;
 import com.lvr.livecircle.bean.ResponseResource;
 import com.lvr.livecircle.bean.STS;
 import com.lvr.livecircle.bean.User;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,6 +27,7 @@ import retrofit2.http.Query;
 public interface SyncService {
     /**
      * 注册
+     *
      * @param
      * @return
      */
@@ -35,6 +37,7 @@ public interface SyncService {
 
     /**
      * 登录
+     *
      * @param
      * @return
      */
@@ -44,6 +47,7 @@ public interface SyncService {
 
     /**
      * 获取首页数据
+     *
      * @param
      * @return
      */
@@ -53,6 +57,7 @@ public interface SyncService {
 
     /**
      * 获取用户发布的资源列表
+     *
      * @param
      * @return
      */
@@ -63,6 +68,7 @@ public interface SyncService {
 
     /**
      * 获取用户的买入列表
+     *
      * @param
      * @return
      */
@@ -72,6 +78,7 @@ public interface SyncService {
 
     /**
      * 获取用户卖出的订单列表
+     *
      * @param
      * @return
      */
@@ -81,15 +88,17 @@ public interface SyncService {
 
     /**
      * 通过id查询资源详情
+     *
      * @param
      * @return
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-        @POST(ApiString.getResourceById)
+    @POST(ApiString.getResourceById)
     Call<BaseResponse<List<ResponseResource>>> getResourceById(@Body Resources resources);
 
     /**
      * 下订单
+     *
      * @param
      * @return
      */
@@ -99,6 +108,7 @@ public interface SyncService {
 
     /**
      * 获取通告列表
+     *
      * @param
      * @return
      */
@@ -108,6 +118,7 @@ public interface SyncService {
 
     /**
      * 获取通告评论列表
+     *
      * @param
      * @return
      */
@@ -117,6 +128,7 @@ public interface SyncService {
 
     /**
      * 对通告进行评论
+     *
      * @param
      * @return
      */
@@ -126,6 +138,7 @@ public interface SyncService {
 
     /**
      * 获取STS数据
+     *
      * @param
      * @return
      */
@@ -135,6 +148,7 @@ public interface SyncService {
 
     /**
      * 更新用户信息
+     *
      * @param
      * @return
      */
@@ -144,6 +158,7 @@ public interface SyncService {
 
     /**
      * 获取资源类别
+     *
      * @param
      * @return
      */
@@ -153,22 +168,27 @@ public interface SyncService {
 
     /**
      * 创建资源
+     *
      * @param
      * @return
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.createResource)
     Call<BaseResponse> createResource(@Body Resources resources);
+
     /**
      * 获取收藏资源列表
+     *
      * @param
      * @return
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.getCollectionList)
     Call<BaseResponse<List<ResponseResource>>> getCollectionResource(@Body Resources resources);
+
     /**
      * 收藏资源
+     *
      * @param
      * @return
      */
@@ -178,11 +198,33 @@ public interface SyncService {
 
     /**
      * 卖家发货
+     *
      * @param
      * @return
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.sure_ship)
     Call<BaseResponse> sureShip(@Body Resources resources);
+
+    /**
+     * 删除买入订单
+     *
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.deleteBuyOrder)
+    Call<BaseResponse> deleteBuyOrder(@Body Resources resources);
+
+    /**
+     * 删除卖出订单
+     *
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.deleteSellOrder)
+    Call<BaseResponse> deleteSellOrder(@Body Resources resources);
+
 }
 

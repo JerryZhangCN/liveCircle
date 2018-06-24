@@ -46,5 +46,8 @@ public class ApiString {
     public static final String collectionResource="/m/userApi/collectionResources";
     //卖家发货
     public static final String sure_ship="/m/orderApi/merchantSendGoods";
-
+    //取消买入订单
+    public static final String deleteBuyOrder="/m/orderApi/consumeCancelOrder";
+    //取消卖出订单
+    public static final String deleteSellOrder="/m/orderApi/merchantCancelOrder";
 }

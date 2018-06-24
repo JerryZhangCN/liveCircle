@@ -98,6 +98,7 @@ public class ShellActivity extends BaseActivity implements DialogTwoButtonClickL
     private void getData() {
         if (Cache.getInstance().getUser() == null)
             return;
+        startProgressDialog();
         mStartPage = 1;
         results.clear();
         if (adapter != null) {
@@ -138,6 +139,16 @@ public class ShellActivity extends BaseActivity implements DialogTwoButtonClickL
                 }
                 break;
             }
+            case StatusCode.deleteSellOrder: {
+                stopProgressDialog();
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
+                    showLongToast("取消订单成功！");
+                    getData();
+                } else {
+                    showLongToast("拉取数据失败！");
+                }
+                break;
+            }
         }
     }
 
@@ -171,10 +182,30 @@ public class ShellActivity extends BaseActivity implements DialogTwoButtonClickL
                 holder.setText(R.id.order_time, DateUtil.date2Str(new Date(Long.parseLong(order.getItime())), DateUtil.FORMAT_DEFAULT));
                 holder.setText(R.id.order_name, order.getResources_name());
                 holder.setText(R.id.order_distribution, order.getShipping_status().equals("0") ? "未发货" : "已发货");
+                holder.setVisible(R.id.order_sure, false);
+                holder.setVisible(R.id.order_delete, false);
+                if (order.getShipping_status().equals("0")) {
+                    holder.setVisible(R.id.order_sure, true);
+                    holder.setOnClickListener(R.id.order_sure, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkOrder = order;
+                            DialogUtil.showCheckDialog(ShellActivity.this, "确认发货", "请确认您已经将货物发出！", "是的，我已发货", "不，我还没发货", StatusCode.sureShip, ShellActivity.this);
+                        }
+                    });
+                }
                 holder.setText(R.id.order_price, order.getResources_price());
                 switch (order.getOrder_status()) {
                     case "1": {
                         holder.setText(R.id.order_status, "进行中");
+                        holder.setVisible(R.id.order_delete, true);
+                        holder.setOnClickListener(R.id.order_delete, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                checkOrder = order;
+                                DialogUtil.showCheckDialog(ShellActivity.this, "取消订单", "订单取消将无法恢复，请确认是否要取消订单？", "是的", "我再想想", StatusCode.deleteBuyOrder, ShellActivity.this);
+                            }
+                        });
                         break;
                     }
                     case "2": {
@@ -186,13 +217,6 @@ public class ShellActivity extends BaseActivity implements DialogTwoButtonClickL
                         break;
                     }
                 }
-                holder.setOnClickListener(R.id.order_sure, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        checkOrder = order;
-                        DialogUtil.showCheckDialog(ShellActivity.this, "确认收货", "是的，我已发货", "不，我还没发货", StatusCode.sureShip, ShellActivity.this);
-                    }
-                });
             }
         };
         xRecyclerView.setAdapter(adapter);
@@ -228,6 +252,15 @@ public class ShellActivity extends BaseActivity implements DialogTwoButtonClickL
                 resources1.setId(checkOrder.getId());
                 resources1.setUser_id(Cache.getInstance().getUser().getUser_id());
                 registerPresent.sureShip(resources1);
+                break;
+            }
+            case StatusCode.deleteBuyOrder: {
+                startProgressDialog();
+                RegisterPresent registerPresent = new RegisterPresentImpl();
+                Resources resources1 = new Resources();
+                resources1.setId(checkOrder.getId());
+                resources1.setUser_id(Cache.getInstance().getUser().getUser_id());
+                registerPresent.deleteSellOrder(resources1);
                 break;
             }
         }

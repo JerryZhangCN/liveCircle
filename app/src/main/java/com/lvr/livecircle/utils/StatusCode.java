@@ -51,4 +51,10 @@ public class StatusCode {
     public static final int collectionResource=727;
     //确认发货
     public static final int sureShip=728;
+    //删除买入订单
+    public static final int deleteBuyOrder=729;
+    //删除卖出订单
+    public static final int deleteSellOrder=730;
+    //查询资源
+    public static final int searchType=731;
 }

@@ -184,7 +184,7 @@
             android:textSize="@dimen/text_size_5px"
             android:gravity="center"/>
         <ImageView
-            android:id="@+id/delete"
+            android:id="@+id/order_delete"
             android:layout_width="@dimen/hint_3x"
             android:layout_height="0dp"
             android:layout_weight="1"

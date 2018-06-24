@@ -117,6 +117,7 @@ public class ResourceActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        startProgressDialog();
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         Resources resources = new Resources();

@@ -91,6 +91,7 @@ public class SetupActivity extends BaseActivity {
     private void getData() {
         if (Cache.getInstance().getUser() == null)
             return;
+        startProgressDialog();
         mStartPage = 1;
         results.clear();
         if (adapter != null) {
