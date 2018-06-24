@@ -168,12 +168,21 @@ public interface SyncService {
     @POST(ApiString.getCollectionList)
     Call<BaseResponse<List<ResponseResource>>> getCollectionResource(@Body Resources resources);
     /**
-     * 创建资源
+     * 收藏资源
      * @param
      * @return
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.collectionResource)
     Call<BaseResponse> collectionResource(@Body Resources resources);
+
+    /**
+     * 卖家发货
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.sure_ship)
+    Call<BaseResponse> sureShip(@Body Resources resources);
 }
 

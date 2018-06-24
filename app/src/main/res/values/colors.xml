@@ -17,6 +17,8 @@
     <color name="role_right_gray">#929292</color>
     <color name="role_yellow_gray">#33CC99</color>
     <color name="container_background">#EBEBEB</color>
+    <!--半透明黑-->
+    <color name="transparent_black">#4fa8a8a8</color>
 
     <!-- yellow -->
     <color name="color_yellow">#F5A144</color>

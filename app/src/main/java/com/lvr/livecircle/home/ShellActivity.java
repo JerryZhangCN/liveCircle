@@ -23,6 +23,8 @@ import com.lvr.livecircle.bean.Resources;
 import com.lvr.livecircle.home.present.RegisterPresent;
 import com.lvr.livecircle.home.present.RegisterPresentImpl;
 import com.lvr.livecircle.utils.DateUtil;
+import com.lvr.livecircle.utils.DialogTwoButtonClickListener;
+import com.lvr.livecircle.utils.DialogUtil;
 import com.lvr.livecircle.utils.StatusCode;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -39,7 +41,7 @@ import de.greenrobot.event.ThreadMode;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 
-public class ShellActivity extends BaseActivity {
+public class ShellActivity extends BaseActivity implements DialogTwoButtonClickListener {
     //当前页面数（第一次加载默认为1）
     private int mStartPage = 1;
     //每页元素个数（默认为10）
@@ -58,6 +60,8 @@ public class ShellActivity extends BaseActivity {
     //返回资源容器
     private List<Order> results = new ArrayList<>();
 
+    private Order checkOrder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +74,6 @@ public class ShellActivity extends BaseActivity {
 
     @Override
     public void initPresenter() {
-
     }
 
     @Override
@@ -80,9 +83,9 @@ public class ShellActivity extends BaseActivity {
     }
 
     @OnClick(R.id.top_back)
-    public void OnClick(View view){
-        switch (view.getId()){
-            case R.id.top_back:{
+    public void OnClick(View view) {
+        switch (view.getId()) {
+            case R.id.top_back: {
                 finish();
                 break;
             }
@@ -125,6 +128,16 @@ public class ShellActivity extends BaseActivity {
                 }
                 break;
             }
+            case StatusCode.sureShip: {
+                stopProgressDialog();
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
+                    showLongToast("发货成功！");
+                    getData();
+                } else {
+                    showLongToast("拉取数据失败！");
+                }
+                break;
+            }
         }
     }
 
@@ -152,7 +165,7 @@ public class ShellActivity extends BaseActivity {
         xRecyclerView.setLoadingMoreEnabled(true);
         adapter = new CommonAdapter<Order>(this, R.layout.order, results) {
             @Override
-            protected void convert(ViewHolder holder, Order order, int position) {
+            protected void convert(ViewHolder holder, final Order order, int position) {
                 Glide.with(ShellActivity.this).load(order.getResources_img1()).into((ImageView) holder.getView(R.id.order_img));
                 holder.setText(R.id.order_number, order.getOrderno());
                 holder.setText(R.id.order_time, DateUtil.date2Str(new Date(Long.parseLong(order.getItime())), DateUtil.FORMAT_DEFAULT));
@@ -173,8 +186,13 @@ public class ShellActivity extends BaseActivity {
                         break;
                     }
                 }
-
-
+                holder.setOnClickListener(R.id.order_sure, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checkOrder = order;
+                        DialogUtil.showCheckDialog(ShellActivity.this, "确认收货", "是的，我已发货", "不，我还没发货", StatusCode.sureShip, ShellActivity.this);
+                    }
+                });
             }
         };
         xRecyclerView.setAdapter(adapter);
@@ -200,22 +218,23 @@ public class ShellActivity extends BaseActivity {
         });
     }
 
-    /**
-     * 为解决泛型传递集合时出现解析异常所使用的工具类
-     *
-     * @param json
-     * @param t
-     * @param <T>
-     * @return
-     */
-    public static <T> List<T> jsonToBeanList(String json, Class<T> t) {
-        List<T> list = new ArrayList<>();
-        JsonParser parser = new JsonParser();
-        JsonArray jsonarray = parser.parse(json).getAsJsonArray();
-        for (JsonElement element : jsonarray
-                ) {
-            list.add(new Gson().fromJson(element, t));
+    @Override
+    public void clickYes(int type) {
+        switch (type) {
+            case StatusCode.sureShip: {
+                startProgressDialog();
+                RegisterPresent registerPresent = new RegisterPresentImpl();
+                Resources resources1 = new Resources();
+                resources1.setId(checkOrder.getId());
+                resources1.setUser_id(Cache.getInstance().getUser().getUser_id());
+                registerPresent.sureShip(resources1);
+                break;
+            }
         }
-        return list;
+    }
+
+    @Override
+    public void clickNo(int type) {
+
     }
 }

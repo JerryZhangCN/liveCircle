@@ -45,6 +45,12 @@
     <string name="order_name">订单名称:</string>
     <string name="order_status">订单状态:</string>
     <string name="order_distribution">订单发货:</string>
+    <string name="sure_ship">确认\n发货</string>
+    <string name="ship_title">确认发货</string>
+    <string name="sure_receipt">确认\n收货</string>
+    <string name="sure">是的，我想好了</string>
+    <string name="cancel">容我再想想</string>
+    <string name="ship_tip">请确认您已经将资源发货后再确认发货！</string>
 
     <!-- 商品详情 -->
     <string name="resource_msg">资源详情</string>

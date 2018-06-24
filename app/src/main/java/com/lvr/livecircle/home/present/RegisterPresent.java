@@ -27,4 +27,5 @@ public interface RegisterPresent {
     void createResource(Resources resources);
     void getUserCollection(Resources resources);
     void collectionResource(Resources resources);
+    void sureShip(Resources resources);
 }

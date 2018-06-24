@@ -109,6 +109,11 @@ public class RegisterPresentImpl implements RegisterPresent {
         doConnect(StatusCode.collectionResource, resources);
     }
 
+    @Override
+    public void sureShip(Resources resources) {
+        doConnect(StatusCode.sureShip, resources);
+    }
+
 
     /**
      * 网络请求
@@ -214,6 +219,11 @@ public class RegisterPresentImpl implements RegisterPresent {
                         case StatusCode.collectionResource: {
                             Response<BaseResponse> resourceResponse = syncService.collectionResource((Resources) object).execute();
                             EventBus.getDefault().post(new ObjectEvent<>(StatusCode.collectionResource, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.sureShip: {
+                            Response<BaseResponse> resourceResponse = syncService.sureShip((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.sureShip, resourceResponse.body(), true));
                             break;
                         }
                     }

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.Subscribe;
@@ -55,7 +56,6 @@ public class OrderActivity extends BaseActivity {
     TextView no_data;
     @BindView(R.id.top_title)
     TextView top_title;
-
     //通用的适配器
     private CommonAdapter adapter;
     //返回资源容器
@@ -174,7 +174,6 @@ public class OrderActivity extends BaseActivity {
                         break;
                     }
                 }
-
 
             }
         };

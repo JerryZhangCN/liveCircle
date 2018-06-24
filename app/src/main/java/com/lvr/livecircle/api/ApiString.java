@@ -44,5 +44,7 @@ public class ApiString {
     public static final String getCollectionList="/m/userApi/listCollection";
     //收藏资源
     public static final String collectionResource="/m/userApi/collectionResources";
+    //卖家发货
+    public static final String sure_ship="/m/orderApi/merchantSendGoods";
 
 }

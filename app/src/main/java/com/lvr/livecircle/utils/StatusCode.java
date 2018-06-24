@@ -49,4 +49,6 @@ public class StatusCode {
     public static final int getCollectionResource=726;
     //创建资源
     public static final int collectionResource=727;
+    //确认发货
+    public static final int sureShip=728;
 }
