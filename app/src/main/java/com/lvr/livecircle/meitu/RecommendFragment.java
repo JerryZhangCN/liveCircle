@@ -125,7 +125,7 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
             case R.id.search: {
                 if (isSearch) {
                     getData();
-                    editText.setVisibility(View.INVISIBLE);
+//                    editText.setVisibility(View.INVISIBLE);
                 } else
                     editText.setVisibility(View.VISIBLE);
                 isSearch = !isSearch;
