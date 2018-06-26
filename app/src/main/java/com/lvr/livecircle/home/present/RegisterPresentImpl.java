@@ -34,6 +34,7 @@ public class RegisterPresentImpl implements RegisterPresent {
         doConnect(StatusCode.login, user);
     }
 
+    //根据参数获取资源列表
     @Override
     public void getResource(Resources resources) {
         doConnect(StatusCode.getResources, resources);

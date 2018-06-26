@@ -2,7 +2,7 @@ package com.lvr.livecircle.bean;
 
 
 /**
- * Created by peter on 10/8/2017.
+ * eventbus 传递的父类
  */
 
 public class ObjectEvent<T> {

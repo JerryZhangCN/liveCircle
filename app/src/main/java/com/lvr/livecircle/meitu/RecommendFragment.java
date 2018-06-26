@@ -48,7 +48,9 @@ import de.greenrobot.event.ThreadMode;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 
-
+/**
+ * 推荐页面
+ */
 public class RecommendFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 
     //当前页面数（第一次加载默认为1）
@@ -74,13 +76,14 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
     private String type;
     private boolean isSearch = false;
 
+    //获取对应的layout
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_recommend;
     }
 
-    private List<String> resource_types = new ArrayList<>();
-
+    private List<String> resource_types = new ArrayList<>();//缓存资源类别列表
+    //初始化获取数据
     @Override
     protected void initView() {
         getData();
@@ -92,6 +95,7 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
     private void getData() {
         mStartPage = 1;
         results.clear();
+        //把adapter置空
         if (adapter != null) {
             adapter.notifyDataSetChanged();
             adapter = null;
@@ -134,7 +138,7 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
         }
     }
 
-
+//接受eventbus数据并设置为ui线程
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEvent(ObjectEvent event) {
         switch (event.getType()) {
@@ -146,10 +150,10 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
                     Gson gson = new Gson();
                     String json = gson.toJson(baseResponse.getInfo());
                     List<ResponseResource> responseResources = jsonToBeanList(json, ResponseResource.class);
-                    if (adapter != null) {
-                        results.addAll(responseResources);
-                        adapter.notifyDataSetChanged();
-                        xRecyclerView.loadMoreComplete();
+                    if (adapter != null) {        //表示已经有过一次拉取数据了
+                        results.addAll(responseResources);  //把最新拉取的数据添加到资源结果集
+                        adapter.notifyDataSetChanged();      //刷新列表
+                        xRecyclerView.loadMoreComplete();  //关闭上拉加载动画
                     } else
                         initChangeRecycle(responseResources);
                 } else {
@@ -199,7 +203,7 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
      * @param resources
      */
     private void initChangeRecycle(final List<ResponseResource> resources) {
-        xRecyclerView.refreshComplete();
+        xRecyclerView.refreshComplete();    //关闭下拉加载动画
         results.addAll(resources);
         if (resources.size() == 0) {
             no_data.setVisibility(View.VISIBLE);
@@ -209,14 +213,15 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        //设置为可下拉刷新
         xRecyclerView.setPullRefreshEnabled(true);
-        xRecyclerView.setRefreshProgressStyle(BallSpinFadeLoader);
-        xRecyclerView.setLoadingMoreProgressStyle(BallBeat);
-        xRecyclerView.setLayoutManager(layoutManager);
+        xRecyclerView.setRefreshProgressStyle(BallSpinFadeLoader);//设置刷新样式
+        xRecyclerView.setLoadingMoreProgressStyle(BallBeat);//设置上拉加载更多的样式
+        xRecyclerView.setLayoutManager(layoutManager);//设置为竖直方向的线性布局
         xRecyclerView.setLoadingMoreEnabled(true);
         adapter = new CommonAdapter<ResponseResource>(getActivity(), R.layout.resources, results) {
             @Override
-            protected void convert(ViewHolder holder, final ResponseResource responseResource, int position) {
+            protected void convert(ViewHolder holder, final ResponseResource responseResource, int position) {     //一个holder代表一个资源模块
                 Glide.with(getActivity()).load(responseResource.getImg1()).into((ImageView) holder.getView(R.id.resource_img));
                 holder.setText(R.id.resource_name, responseResource.getName());
                 holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())), DateUtil.FORMAT_DEFAULT));

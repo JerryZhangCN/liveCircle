@@ -1,9 +1,6 @@
 package com.lvr.livecircle.bean;
 
-/**
- * Created by jerry on 2018/5/21.
- */
-
+//通用的调取API参数的类
 public class Resources {
     private int page;
     private String order_by_price;

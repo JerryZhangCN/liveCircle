@@ -8,7 +8,7 @@ import com.lvr.livecircle.base.BaseFragmentAdapter;
 import java.util.List;
 
 /**
- * Created by lvr on 2017/2/6.
+ * Created by hsy on 2017/2/6.
  */
 
 public class HomeViewPagerAdapter extends BaseFragmentAdapter {

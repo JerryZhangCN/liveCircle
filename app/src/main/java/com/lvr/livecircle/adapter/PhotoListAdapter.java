@@ -13,7 +13,7 @@ import com.lvr.livecircle.utils.ImageLoaderUtils;
 import java.util.List;
 
 /**
- * Created by lvr on 2017/2/20.
+ * Created by hsy on 2017/2/20.
  */
 
 //public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.PhotoViewHolder> {
