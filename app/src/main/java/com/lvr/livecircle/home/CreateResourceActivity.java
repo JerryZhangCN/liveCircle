@@ -42,6 +42,7 @@ import butterknife.OnClick;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
+//发布资源界面
 public class CreateResourceActivity extends BaseActivity {
     @BindView(R.id.top_title)
     TextView top_title;
@@ -63,12 +64,15 @@ public class CreateResourceActivity extends BaseActivity {
     Spinner resource_type;
 
     private List<String> resource_types=new ArrayList<>();
+    //选中的图像地址
     private Map<Integer,String> imagePaths=new HashMap<>();
+    //图像选择工具
     private ImagePicker imagePicker;
     private int spinnerId=0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //初始化图像选择工具
         imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new GlideImageLoader());
     }
@@ -108,6 +112,7 @@ public class CreateResourceActivity extends BaseActivity {
                 }
                 startProgressDialog();
                 if(imagePaths.size()>0)
+                    //上传图片
                 for(Integer s:imagePaths.keySet()){
                     imagePaths.put(s,ImgUpload.upload(imagePaths.get(s)));
                 }
@@ -157,6 +162,7 @@ public class CreateResourceActivity extends BaseActivity {
         switch (requestCode) {
             case StatusCode.getImg1: {
                 if (data != null && requestCode == StatusCode.getImg1) {
+                    //获取到从图像工具选中的图片
                     ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                     glideResult(images,resource_img1);
                 }
@@ -187,6 +193,7 @@ public class CreateResourceActivity extends BaseActivity {
         imageView.setLayoutParams(params);
         imageView.setBackgroundColor(Color.parseColor("#88888888"));
         String imagePath = images.get(0).path;
+        //把选中的图片加载到图相框
         imagePicker.getImageLoader().displayImage(CreateResourceActivity.this, images.get(0).path, view, 280, 280);
         switch (view.getId()){
             case R.id.resource_img1:{

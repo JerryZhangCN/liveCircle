@@ -188,7 +188,6 @@ public class OrderActivity extends BaseActivity implements DialogTwoButtonClickL
                             public void onClick(View view) {
                                 checkOrder=order;
                                 DialogUtil.showCheckDialog(OrderActivity.this,"取消订单","订单取消将无法恢复，请确认是否要取消订单？","是的","我再想想",StatusCode.deleteBuyOrder,OrderActivity.this);
-
                             }
                         });
                         break;

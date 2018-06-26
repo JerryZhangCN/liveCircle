@@ -42,6 +42,7 @@ import de.greenrobot.event.ThreadMode;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 
+//通告详情页面
 public class NoticeCommentActivity extends BaseActivity {
     @BindView(R.id.top_title)
     TextView top_title;

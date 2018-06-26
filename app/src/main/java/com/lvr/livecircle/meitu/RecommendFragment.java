@@ -239,6 +239,7 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
             }
         };
         xRecyclerView.setAdapter(adapter);
+        //设置上拉加载更多和下拉刷新事件
         xRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {

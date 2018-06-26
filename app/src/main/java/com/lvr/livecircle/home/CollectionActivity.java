@@ -36,7 +36,7 @@ import de.greenrobot.event.ThreadMode;
 
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
-
+//收藏页面
 public class CollectionActivity extends BaseActivity {
 
     //当前页面数（第一次加载默认为1）
@@ -82,6 +82,7 @@ public class CollectionActivity extends BaseActivity {
      * 调用present来访问api以获取数据
      */
     private void getData() {
+        startProgressDialog();
         if (Cache.getInstance().getUser() == null)
             return;
         mStartPage = 1;
@@ -184,6 +185,8 @@ public class CollectionActivity extends BaseActivity {
             }
         });
     }
+
+    //每当页面回到栈顶的时候调用
 
     @Override
     protected void onResume() {

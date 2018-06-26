@@ -42,7 +42,7 @@ import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallBeat;
 import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
 
 /**
- * Created by lvr on 2017/2/6.
+ * 通告列表
  */
 
 public class OrderFragment extends BaseFragment {

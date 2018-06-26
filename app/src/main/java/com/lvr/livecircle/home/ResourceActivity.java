@@ -30,6 +30,7 @@ import butterknife.OnClick;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
+//资源详情页面
 public class ResourceActivity extends BaseActivity {
     @BindView(R.id.tv_img)
     ImageView resource_img;
@@ -67,7 +68,6 @@ public class ResourceActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_resource);
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
