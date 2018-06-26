@@ -26,6 +26,8 @@ import com.lvr.livecircle.bean.User;
 import com.lvr.livecircle.home.present.RegisterPresent;
 import com.lvr.livecircle.home.present.RegisterPresentImpl;
 import com.lvr.livecircle.utils.DateUtil;
+import com.lvr.livecircle.utils.DialogTwoButtonClickListener;
+import com.lvr.livecircle.utils.DialogUtil;
 import com.lvr.livecircle.utils.StatusCode;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -46,7 +48,7 @@ import static com.jcodecraeer.xrecyclerview.ProgressStyle.BallSpinFadeLoader;
  * 我的资源页面
  */
 
-public class SetupActivity extends BaseActivity {
+public class SetupActivity extends BaseActivity implements DialogTwoButtonClickListener{
     //当前页面数（第一次加载默认为1）
     private int mStartPage = 1;
     //每页元素个数（默认为10）
@@ -64,6 +66,7 @@ public class SetupActivity extends BaseActivity {
     private CommonAdapter adapter;
     //返回资源容器
     private List<ResponseResource> results = new ArrayList<>();
+    private ResponseResource checkResource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,12 +141,20 @@ public class SetupActivity extends BaseActivity {
                         results.addAll((List<ResponseResource>) baseResponse.getInfo());
                         adapter.notifyDataSetChanged();
                     } else
-//                    Gson gson = new Gson();
-//                    String json = gson.toJson(baseResponse.getInfo());
-//                    List<ResponseResource> responseResources=jsonToBeanList(json,ResponseResource.class);
                         initChangeRecycle((List<ResponseResource>) baseResponse.getInfo());
                 } else {
                     showLongToast("拉取数据失败！");
+                }
+                break;
+            }
+            case StatusCode.deleteResource: {
+                stopProgressDialog();
+                xRecyclerView.loadMoreComplete();
+                if (((BaseResponse) event.getObject()).getCode() == 1) {
+                    showShortToast("删除资源成功！");
+                    getData();
+                } else {
+                    showShortToast("删除资源失败！");
                 }
                 break;
             }
@@ -174,14 +185,21 @@ public class SetupActivity extends BaseActivity {
         xRecyclerView.setLoadingMoreEnabled(true);
         adapter = new CommonAdapter<ResponseResource>(this, R.layout.resources, results) {
             @Override
-            protected void convert(ViewHolder holder, ResponseResource responseResource, int position) {
+            protected void convert(ViewHolder holder, final ResponseResource responseResource, int position) {
                 Glide.with(SetupActivity.this).load(responseResource.getImg1()).into((ImageView) holder.getView(R.id.resource_img));
                 holder.setText(R.id.resource_name, responseResource.getName());
                 holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())), DateUtil.FORMAT_DEFAULT));
                 holder.setText(R.id.resource_credit, responseResource.getCredit_number());
                 holder.setText(R.id.resource_price, responseResource.getPricenew());
+                holder.setOnClickListener(R.id.resource_delete, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checkResource=responseResource;
+                        DialogUtil.showCheckDialog(SetupActivity.this, "删除资源", "资源删除将无法恢复，请确认是否要删除资源？", "是的", "我再想想", StatusCode.deleteResource, SetupActivity.this);
+                    }
+                });
             }
-        };
+};
         xRecyclerView.setAdapter(adapter);
         xRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -203,6 +221,26 @@ public class SetupActivity extends BaseActivity {
                 present.getMyResource(resources);
             }
         });
+    }
+
+    @Override
+    public void clickYes(int type) {
+        switch (type) {
+            case StatusCode.deleteResource: {
+                startProgressDialog();
+                RegisterPresent registerPresent = new RegisterPresentImpl();
+                Resources resources1 = new Resources();
+                resources1.setId(checkResource.getId());
+                resources1.setUser_id(Cache.getInstance().getUser().getUser_id());
+                registerPresent.deleteResource(resources1);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void clickNo(int type) {
+
     }
 
     @Override

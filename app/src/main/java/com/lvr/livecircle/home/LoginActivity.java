@@ -2,7 +2,11 @@ package com.lvr.livecircle.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +24,9 @@ import com.lvr.livecircle.bean.User;
 import com.lvr.livecircle.home.present.RegisterPresent;
 import com.lvr.livecircle.home.present.RegisterPresentImpl;
 import com.lvr.livecircle.utils.StatusCode;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,6 +56,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void initView() {
        top_down.setVisibility(View.VISIBLE);
+        ed_password.setTypeface(Typeface.DEFAULT);
+        ed_password.setTransformationMethod(new PasswordTransformationMethod());
+        setEditTextInhibitInputSpeChat(ed_password);
+        setEditTextInhibitInputSpeChat(ed_loginName);
     }
 
     @OnClick({R.id.top_back, R.id.top_done, R.id.btn_login})
@@ -70,6 +81,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     Toast.makeText(this, "请输入账号密码！", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(ed_password.getText().toString().length()<6){
+                    showShortToast("密码长度不能小于6位");
+                    return;
+                }
+
                 startProgressDialog();
                 User user = new User();
                 user.setUser_name(ed_loginName.getText().toString().trim());
@@ -100,5 +116,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
             }
         }
+    }
+    /**
+     * 禁止EditText输入特殊字符
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpeChat(EditText editText){
+
+        InputFilter filter=new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\]. <>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if(matcher.find())return "";
+                else return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
     }
 }

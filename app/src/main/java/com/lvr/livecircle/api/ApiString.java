@@ -50,4 +50,6 @@ public class ApiString {
     public static final String deleteBuyOrder="/m/orderApi/consumeCancelOrder";
     //取消卖出订单
     public static final String deleteSellOrder="/m/orderApi/merchantCancelOrder";
+    //删除发布资源
+    public static final String deleteResource="/m/resourcesApi/delResources";
 }
