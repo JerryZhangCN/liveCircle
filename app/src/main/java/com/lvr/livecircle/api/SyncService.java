@@ -225,6 +225,15 @@ public interface SyncService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST(ApiString.deleteSellOrder)
     Call<BaseResponse> deleteSellOrder(@Body Resources resources);
+    /**
+     * 删除发布资源
+     *
+     * @param
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST(ApiString.deleteResource)
+    Call<BaseResponse> deleteResource(@Body Resources resources);
 
 }
 

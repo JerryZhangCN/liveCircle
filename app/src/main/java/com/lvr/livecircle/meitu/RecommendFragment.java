@@ -227,6 +227,7 @@ public class RecommendFragment extends BaseFragment implements OnRefreshListener
                 holder.setText(R.id.resource_add_time, DateUtil.date2Str(new Date(Long.parseLong(responseResource.getAdd_time())), DateUtil.FORMAT_DEFAULT));
                 holder.setText(R.id.resource_credit, responseResource.getCredit_number());
                 holder.setText(R.id.resource_price, responseResource.getPricenew());
+                holder.setVisible(R.id.resource_delete,false);
                 holder.setOnClickListener(R.id.product_item, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

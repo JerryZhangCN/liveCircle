@@ -34,6 +34,7 @@
             android:layout_marginRight="@dimen/hint_4x"
             android:background="@null"
             android:hint="@string/login_account"
+            android:maxLength="12"
             android:paddingLeft="@dimen/hint_0.5x"
             android:textColor="@color/color_black"
             android:textSize="@dimen/text_size_8px" />
@@ -55,6 +56,7 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingLeft="@dimen/hint_0.5x"
+            android:maxLength="16"
             android:textColor="@color/color_black"
             android:textSize="@dimen/text_size_8px" />
 

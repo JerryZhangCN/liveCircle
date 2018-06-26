@@ -151,6 +151,7 @@ public class CollectionActivity extends BaseActivity {
                 holder.setVisible(R.id.resource_add_time,false);
                 holder.setText(R.id.resource_credit, responseResource.getCredit_number());
                 holder.setText(R.id.resource_price, responseResource.getPricenew());
+                holder.setVisible(R.id.resource_delete,false);
                 holder.setOnClickListener(R.id.product_item, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

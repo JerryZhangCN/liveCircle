@@ -125,6 +125,10 @@ public class RegisterPresentImpl implements RegisterPresent {
         doConnect(StatusCode.deleteSellOrder, resources);
     }
 
+    @Override
+    public void deleteResource(Resources resources) {
+        doConnect(StatusCode.deleteResource, resources);
+    }
 
 
     /**
@@ -246,6 +250,11 @@ public class RegisterPresentImpl implements RegisterPresent {
                         case StatusCode.deleteSellOrder: {
                             Response<BaseResponse> resourceResponse = syncService.deleteSellOrder((Resources) object).execute();
                             EventBus.getDefault().post(new ObjectEvent<>(StatusCode.deleteSellOrder, resourceResponse.body(), true));
+                            break;
+                        }
+                        case StatusCode.deleteResource: {
+                            Response<BaseResponse> resourceResponse = syncService.deleteResource((Resources) object).execute();
+                            EventBus.getDefault().post(new ObjectEvent<>(StatusCode.deleteResource, resourceResponse.body(), true));
                             break;
                         }
                     }

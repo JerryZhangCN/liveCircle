@@ -55,5 +55,7 @@ public class StatusCode {
     public static final int deleteBuyOrder=729;
     //删除卖出订单
     public static final int deleteSellOrder=730;
+    //删除发布资源
+    public static final int deleteResource=731;
 
 }

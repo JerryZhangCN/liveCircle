@@ -30,4 +30,5 @@ public interface RegisterPresent {
     void sureShip(Resources resources);
     void deleteBuyOrder(Resources resources);
     void deleteSellOrder(Resources resources);
+    void deleteResource(Resources resources);
 }
